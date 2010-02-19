@@ -1,0 +1,7 @@
+:twitter:
+  :api: 'api.twitter.com/v1'
+  :headers:
+  :consumer_key:
+  :consumer_secret:
+  :username: 'twitter_username_for_test'
+  :password: 'twitter_password_for_test'
