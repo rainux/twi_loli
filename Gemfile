@@ -10,6 +10,7 @@ gem 'rails', '3.0.0.beta'
 
 ## Bundle the gems you use:
 gem 'grackle'
+gem 'compass'
 
 ## Bundle gems used only in certain environments:
 # gem 'rspec', :group => :test
