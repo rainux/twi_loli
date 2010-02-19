@@ -1,0 +1,10 @@
+%li
+  %span
+    = link_to image_tag(status.user.profile_image_url, :alt => status.user.name, :size => '48x48'), user_path(status.user.screen_name), :title => status.user.name
+  %span
+    %strong
+      = link_to status.user.screen_name, user_path(status.user.screen_name), :title => status.user.name
+  %span= status.text
+  %span
+    = link_to status.created_at, status_path(status.id)
+    %span= raw "via #{status.source}"

@@ -1,0 +1,35 @@
+!!! 5
+%html
+  %head
+    %meta(http-equiv='Content-Type' content='text/html; charset=UTF-8')
+    %title TwiLoli
+    = stylesheet_link_tag 'compiled/screen.css', :media => 'screen, projection'
+    = stylesheet_link_tag 'compiled/print.css', :media => 'print'
+    /[if lt IE 8]
+      = stylesheet_link_tag 'compiled/ie.css', :media => 'screen, projection'
+    = csrf_meta_tag
+
+
+  %body.three-col
+    #container
+      #header
+        %h1 TwiLoli
+
+      #content
+        - if notice
+          %p.notice= notice
+
+        =yield
+
+      #sidebar
+        %ul#primary_nav
+          %li
+            = link_to 'Home', root_path
+          %li
+            = link_to 'Mentions', mentions_path
+
+      #footer
+        &copy; 2010 Rainux
+
+    = javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'
+    = javascript_include_tag 'rails'

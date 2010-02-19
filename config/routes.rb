@@ -1,4 +1,17 @@
 TwiLoli::Application.routes.draw do |map|
+  resources :statuses do
+    collection do
+      get   :public_timeline
+      get   :home_timeline
+      get   :user_timeline
+      get   :mentions
+    end
+  end
+
+  root :to => 'statuses#home_timeline'
+  match '/mentions' => 'statuses#mentions', :as => 'mentions'
+  match ':user_id' => 'users#show', :as => :user
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
