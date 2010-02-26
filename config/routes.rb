@@ -5,6 +5,8 @@ TwiLoli::Application.routes.draw do |map|
       get   :home_timeline
       get   :user_timeline
       get   :mentions
+      get   :friends
+      get   :followers
     end
   end
 
@@ -12,6 +14,8 @@ TwiLoli::Application.routes.draw do |map|
 
   root :to => 'statuses#home_timeline'
   match '/mentions' => 'statuses#mentions', :as => 'mentions'
+  match '/following' => 'statuses#friends', :as => 'following'
+  match '/followers' => 'statuses#followers', :as => 'followers'
   match '/oauth_complete' => 'sessions#oauth_complete'
   match ':user_id' => 'users#show', :as => :user
 

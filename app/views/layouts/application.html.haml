@@ -13,7 +13,7 @@
   %body.three-col
     #container
       #header
-        %h1 TwiLoli
+        %h1= link_to 'TwiLoli', root_path
         %ul
           - unless logged_in?
             %li= link_to 'Sign in with Twitter', new_session_path
@@ -27,6 +27,27 @@
         =yield
 
       #sidebar
+        - if logged_in?
+          .profile
+            .user-icon
+              - content_for :user_icon do
+                = image_tag(current_user.profile_image_url, :alt => current_user.name, :size => '48x48')
+                %span= current_user.screen_name
+                %span
+                  %span= "#{current_user.statuses_count} tweets"
+              = link_to yield(:user_icon), user_path(current_user.screen_name), :title => current_user.name
+            %ul.stats
+              - content_for :following do
+                %span= current_user.friends_count
+                %span following
+              - content_for :followers do
+                %span= current_user.followers_count
+                %span followers
+              %li= link_to yield(:following), following_path
+              %li= link_to yield(:followers), followers_path
+
+
+
         %ul#primary_nav
           %li
             = link_to 'Home', root_path

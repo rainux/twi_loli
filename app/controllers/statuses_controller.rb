@@ -25,6 +25,18 @@ class StatusesController < ApplicationController
     respond_with(@statuses)
   end
 
+  def friends
+    @users = Twitter.statuses.friends?
+
+    respond_with(@users)
+  end
+
+  def followers
+    @statuses = Twitter.statuses.followers?
+
+    respond_with(@users)
+  end
+
   def create
     Twitter.statuses.update! params[:status].merge(:source => 'TwiLoli')
 
