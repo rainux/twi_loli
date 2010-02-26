@@ -9,3 +9,5 @@
 
 %ol#timeline
   = render :partial => 'status', :collection => @statuses
+
+= pagination :newer => root_path(:page => @newer_page), :older => root_path(:page => @older_page)

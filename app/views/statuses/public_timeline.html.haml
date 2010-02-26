@@ -1,2 +1,4 @@
 %ol#timeline
   = render :partial => 'status', :collection => @statuses
+
+= pagination :newer => public_timeline_statuses_path(:page => @newer_page), :older => public_timeline_statuses_path(:page => @older_page)
