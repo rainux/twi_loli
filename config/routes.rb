@@ -8,8 +8,11 @@ TwiLoli::Application.routes.draw do |map|
     end
   end
 
+  resource :session
+
   root :to => 'statuses#home_timeline'
   match '/mentions' => 'statuses#mentions', :as => 'mentions'
+  match '/oauth_complete' => 'sessions#oauth_complete'
   match ':user_id' => 'users#show', :as => :user
 
   # The priority is based upon order of creation:

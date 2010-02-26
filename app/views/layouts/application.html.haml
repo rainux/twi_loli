@@ -14,6 +14,11 @@
     #container
       #header
         %h1 TwiLoli
+        %ul
+          - unless logged_in?
+            %li= link_to 'Sign in with Twitter', new_session_path
+          - else
+            %li= link_to 'Sign out', session_path, :method => :delete
 
       #content
         - if notice

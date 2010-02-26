@@ -9,6 +9,7 @@ gem 'rails', '3.0.0.beta'
 
 
 ## Bundle the gems you use:
+gem 'rack-oauth'
 gem 'grackle'
 gem 'compass'
 
