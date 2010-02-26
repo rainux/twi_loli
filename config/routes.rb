@@ -17,7 +17,7 @@ TwiLoli::Application.routes.draw do |map|
   match '/following' => 'statuses#friends', :as => 'following'
   match '/followers' => 'statuses#followers', :as => 'followers'
   match '/oauth_complete' => 'sessions#oauth_complete'
-  match ':user_id' => 'users#show', :as => :user
+  match ':user_id' => 'statuses#user_timeline', :as => 'user'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
