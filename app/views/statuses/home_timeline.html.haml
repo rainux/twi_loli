@@ -1,2 +1,11 @@
+- form_for :status, :url => statuses_path do |f|
+  .bar
+    %h3
+      = f.label :status
+  .info
+    = f.text_area :status, :size => '60x4'
+    .status-btn
+      = f.submit 'update'
+
 %ol#timeline
   = render :partial => 'status', :collection => @statuses

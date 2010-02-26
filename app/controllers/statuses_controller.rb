@@ -24,4 +24,10 @@ class StatusesController < ApplicationController
 
     respond_with(@statuses)
   end
+
+  def create
+    Twitter.statuses.update! params[:status].merge(:source => 'TwiLoli')
+
+    redirect_to root_path
+  end
 end
