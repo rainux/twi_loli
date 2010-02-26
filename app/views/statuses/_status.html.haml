@@ -1,10 +1,20 @@
-%li
+%li.status{:id => "status_#{status.id}", 'data-id' => status.id, 'data-user' => status.user.screen_name}
   %span
     = link_to image_tag(status.user.profile_image_url, :alt => status.user.name, :size => '48x48'), user_path(status.user.screen_name), :title => status.user.name
   %span
     %strong
       = link_to status.user.screen_name, user_path(status.user.screen_name), :title => status.user.name
-  %span= status.text
+  %span.content= status.text
   %span
     = link_to status.created_at, status_path(status.id)
     %span= raw "via #{status.source}"
+    %ul.actions-hover
+      %li
+        %span.reply
+          = link_to 'Reply', root_path(:in_reply_to => status.user.screen_name, :in_reply_to_status_id => status.id), :title => "Reply to #{status.user.screen_name}"
+      %li
+        %span.retweet-with-comment
+          = link_to 'Retweet with comment', root_path(:retweet_id => status.id), :title => 'Retweet with comment (Traditional RT)'
+      %li
+        %span.retweet
+          = link_to 'Retweet', '#', :title => 'Retweet (Official RT)'
