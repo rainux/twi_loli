@@ -64,31 +64,41 @@ jQuery(function ($) {
 
     $('.reply > a').click(function() {
 
-      var $tweet = $(this).parents('.status');
+      var $status = $('#status_status');
 
-      $('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
-      $('#status_status').val('@' + $tweet.attr('data-user') + ' ')
-        .focus()
-        .keyup()
-        [0].setSelectionRange(256, 256);
+      if ($status.length) {
 
-      return false;
+        var $tweet = $(this).parents('.status');
+
+        $('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
+        $status.val('@' + $tweet.attr('data-user') + ' ')
+          .focus()
+          .keyup()
+          [0].setSelectionRange(256, 256);
+
+        return false;
+      }
     });
 
 
     $('.retweet-with-comment > a').click(function() {
 
-      var $tweet = $(this).parents('.status');
-      var content = $tweet.find('.content').text();
+      var $status = $('#status_status');
 
-      $('#status_in_reply_to_status_id').val('');
-      $('#status_status')
-        .val('RT @' + $tweet.attr('data-user') + ': ' + content)
-        .focus()
-        .keyup()
-        [0].setSelectionRange(0, 0);
+      if ($status.length) {
 
-      return false;
+        var $tweet = $(this).parents('.status');
+        var content = $tweet.find('.content').text();
+
+        $('#status_in_reply_to_status_id').val('');
+        $status
+          .val('RT @' + $tweet.attr('data-user') + ': ' + content)
+          .focus()
+          .keyup()
+          [0].setSelectionRange(0, 0);
+
+        return false;
+      }
     });
   });
 
