@@ -6,7 +6,21 @@ jQuery(function ($) {
 
     $('#status_status').keyup(function() {
 
-      var $this = $(this);
+      var $this = $(this),
+        count,
+        color;
+
+      count = 140 - $this.val().length;
+
+      if (count >= 20) {
+        color = 'rgb(204, 204, 204)';
+      } else if (count >= 10) {
+        color = 'rgb(92, 0, 2)';
+      } else {
+        color = 'rgb(212, 13, 18)';
+      }
+
+      $('#status-field-char-counter').text(count).css('color', color);
 
       function buildDoingText() {
 
