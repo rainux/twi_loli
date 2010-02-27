@@ -40,6 +40,10 @@ class StatusesController < ApplicationController
   def create
     Twitter.statuses.update! params[:status].merge(:source => 'TwiLoli')
 
+  rescue Grackle::TwitterError => error
+    flash[:error] = JSON.parse(error.response_body)['error']
+
+  ensure
     redirect_to root_path
   end
 end

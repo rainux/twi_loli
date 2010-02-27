@@ -23,6 +23,8 @@
       #content
         - if notice
           %p.notice= notice
+        - if flash[:error]
+          %p.error= flash[:error]
 
         =yield
 
