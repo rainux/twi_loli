@@ -22,6 +22,11 @@ body.bp
 form.bp
   +blueprint-form
 
+a
+  :text-decoration none
+  &:hover
+    :text-decoration underline
+
 // Page layout can be done using mixins applied to your semantic classes and IDs:
 body.three-col
   #container
@@ -38,6 +43,51 @@ body.three-col
     !content_columns = ceil(2 * !blueprint_grid_columns / 3)
     // true means it's the last column in the row
     +column(!content_columns, true)
-    textarea#status_status
-      :height auto
-      :width auto
+    #status_update_box
+      :padding 10px
+      h3
+        :margin-bottom 0
+      textarea#status_status
+        :height auto
+        :width auto
+    .section
+      :padding 0 10px
+      #timeline_heading
+        h1
+          :font-size 1.2em
+      ol#timeline
+        :margin 0
+        li.status
+          +clearfix
+          :border-bottom 1px solid #eee
+          :padding 10px 0 8px
+          &:first-child
+            :border-top 1px solid #eee
+          &:hover
+            :background #f7f7f7
+            ul.actions-hover
+              :visibility visible
+          span.thumb
+            :display block
+            :position absolute
+          span.status-body
+            :display block
+            :margin-left 56px
+            :min-height 48px
+          span.meta
+            :display block
+            :color #999
+            a
+              :color #999
+          ul.actions-hover
+            :float right
+            :visibility hidden
+            li
+              :display inline-block
+      .pagination
+        :padding 15px 10px
+        :text-align right
+        a
+          :background #eee
+          :border 1px solid #ccc
+          :padding 5px

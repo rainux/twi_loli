@@ -1,4 +1,9 @@
-%ol#timeline
-  = render :partial => 'status', :collection => @statuses
+- content_for :timeline_heading do
+  #timeline_heading
+    %h1= "Tweets mentioning @#{current_user.screen_name}"
 
-= pagination :newer => mentions_path(:page => @newer_page), :older => mentions_path(:page => @older_page)
+- content_for :pagination do
+  = pagination :newer => mentions_path(:page => @newer_page), :older => mentions_path(:page => @older_page)
+
+= render :partial => 'update'
+= render :partial => 'timeline'

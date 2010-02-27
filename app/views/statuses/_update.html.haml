@@ -1,0 +1,10 @@
+#status_update_box
+  - form_for :status, :url => statuses_path do |f|
+    .bar
+      %h3
+        = f.label :status, "What's happening?", :class => 'doing'
+    .info
+      = f.text_area :status, :size => '60x4'
+      = f.hidden_field :in_reply_to_status_id
+      .status-btn
+        = f.submit 'update'

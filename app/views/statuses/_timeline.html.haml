@@ -1,0 +1,7 @@
+.section
+  = yield :timeline_heading
+
+  %ol#timeline
+    = render :partial => 'status', :collection => @statuses
+
+  = yield :pagination

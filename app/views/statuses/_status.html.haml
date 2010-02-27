@@ -1,15 +1,15 @@
 - status.created_at = Time.zone.parse(status.created_at)
 
 %li.status{:id => "status_#{status.id}", 'data-id' => status.id, 'data-user' => status.user.screen_name}
-  %span
+  %span.thumb
     = link_to image_tag(status.user.profile_image_url, :alt => status.user.name, :size => '48x48'), user_path(status.user.screen_name), :title => status.user.name
-  %span
+  %span.status-body
     %strong
       = link_to status.user.screen_name, user_path(status.user.screen_name), :title => status.user.name
-  %span.content= raw format_tweet(status.text)
-  %span
-    = link_to "#{distance_of_time_in_words_to_now(status.created_at, true)} ago", status_path(status.id), :title => status.created_at
-    %span= raw "via #{status.source}"
+    %span.content= raw format_tweet(status.text)
+    %span.meta
+      = link_to "#{distance_of_time_in_words_to_now(status.created_at, true)} ago", status_path(status.id), :title => status.created_at
+      %span= raw "via #{status.source}"
     %ul.actions-hover
       %li
         %span.reply
