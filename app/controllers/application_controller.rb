@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   def set_twitter_auth
     if logged_in?
       Twitter.auth = session[:auth]
+      Time.zone = session[:user].time_zone
     end
   end
 
