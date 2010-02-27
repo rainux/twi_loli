@@ -1,4 +1,5 @@
 - content_for :pagination do
   = pagination :newer => user_path(:page => @newer_page), :older => user_path(:page => @older_page)
 
+= render :partial => 'update', :locals => {:hide => true}
 = render :partial => 'timeline'

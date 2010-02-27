@@ -70,6 +70,7 @@ jQuery(function ($) {
 
         var $tweet = $(this).parents('.status');
 
+        $('#status_update_box').removeClass('hide');
         $('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
         $status.val('@' + $tweet.attr('data-user') + ' ')
           .focus()
@@ -90,6 +91,7 @@ jQuery(function ($) {
         var $tweet = $(this).parents('.status');
         var content = $tweet.find('.content').text();
 
+        $('#status_update_box').removeClass('hide');
         $('#status_in_reply_to_status_id').val('');
         $status
           .val('RT @' + $tweet.attr('data-user') + ': ' + content)

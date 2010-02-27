@@ -1,4 +1,6 @@
-#status_update_box
+- hide = false unless defined?(hide)
+
+#status_update_box{:class => hide ? 'hide' : nil}
   - form_for :status, :url => statuses_path do |f|
     .bar
       %h3

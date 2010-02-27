@@ -59,10 +59,12 @@ body.three-col
           :font-size 2em
           :font-weight bold
           :color #ccc
-      textarea#status_status
-        :height auto
-        :width 578px
-        :resize none
+      .info
+        +clearfix
+        textarea#status_status
+          :height auto
+          :width 578px
+          :resize none
     .section
       :padding 0 20px
       #timeline_heading
