@@ -46,4 +46,10 @@ class StatusesController < ApplicationController
   ensure
     redirect_to root_path
   end
+
+  def show
+    @status = Twitter.statuses.show? :id => params[:id]
+
+    respond_with(@status)
+  end
 end

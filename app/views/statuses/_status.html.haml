@@ -10,6 +10,8 @@
     %span.meta
       = link_to "#{distance_of_time_in_words_to_now(status.created_at, true)} ago", status_path(status.id), :title => status.created_at
       %span= raw "via #{status.source}"
+      - if status.in_reply_to_status_id
+        = link_to "in reply to #{status.in_reply_to_screen_name}", status_path(status.in_reply_to_status_id)
     %ul.actions-hover
       %li
         %span.reply
