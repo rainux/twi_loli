@@ -10,6 +10,7 @@ TwiLoli::Application.routes.draw do |map|
     end
   end
 
+  resource :search
   resource :session
 
   root :to => 'statuses#home_timeline'

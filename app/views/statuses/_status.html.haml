@@ -6,7 +6,7 @@
   %span
     %strong
       = link_to status.user.screen_name, user_path(status.user.screen_name), :title => status.user.name
-  %span.content= status.text
+  %span.content= raw format_tweet(status.text)
   %span
     = link_to "#{distance_of_time_in_words_to_now(status.created_at, true)} ago", status_path(status.id), :title => status.created_at
     %span= raw "via #{status.source}"
