@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :logged_in?
   protect_from_forgery
+  before_filter :set_twitter_auth
   before_filter :set_page_vars
 
   private
@@ -11,7 +12,13 @@ class ApplicationController < ActionController::Base
   end
 
   def logged_in?
-    get_access_token.present?
+    !!(current_user && session[:auth])
+  end
+
+  def set_twitter_auth
+    if logged_in?
+      Twitter.auth = session[:auth]
+    end
   end
 
   def set_page_vars

@@ -13,6 +13,7 @@ class SessionsController < ApplicationController
       :token => get_access_token.token,
       :token_secret => get_access_token.secret
     }
+    session[:auth] = Twitter.auth
     session[:user] = Twitter.account.verify_credentials?
     redirect_to root_path
   end
