@@ -25,6 +25,24 @@ class StatusesController < ApplicationController
     respond_with(@statuses)
   end
 
+  def retweeted_to_me
+    @statuses = Twitter.statuses.retweeted_to_me? :page => params[:page]
+
+    respond_with(@statuses)
+  end
+
+  def retweeted_by_me
+    @statuses = Twitter.statuses.retweeted_by_me? :page => params[:page]
+
+    respond_with(@statuses)
+  end
+
+  def retweets_of_me
+    @statuses = Twitter.statuses.retweets_of_me? :page => params[:page]
+
+    respond_with(@statuses)
+  end
+
   def friends
     @users = Twitter.statuses.friends? :page => params[:page]
 

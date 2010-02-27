@@ -1,0 +1,9 @@
+- content_for :timeline_heading do
+  #timeline_heading
+    %h1 Your Tweets, Retweeted
+
+- content_for :pagination do
+  = pagination :newer => retweets_of_mine_path(:page => @newer_page), :older => retweets_of_mine_path(:page => @older_page)
+
+= render :partial => 'update'
+= render :partial => 'timeline'

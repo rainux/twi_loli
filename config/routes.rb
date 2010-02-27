@@ -5,6 +5,9 @@ TwiLoli::Application.routes.draw do |map|
       get   :home_timeline
       get   :user_timeline
       get   :mentions
+      get   :retweeted_to_me
+      get   :retweeted_by_me
+      get   :retweets_of_me
       get   :friends
       get   :followers
     end
@@ -15,6 +18,9 @@ TwiLoli::Application.routes.draw do |map|
 
   root :to => 'statuses#home_timeline'
   match '/mentions' => 'statuses#mentions', :as => 'mentions'
+  match '/retweets_by_others' => 'statuses#retweeted_to_me', :as => 'retweets_by_others'
+  match '/retweets' => 'statuses#retweeted_by_me', :as => 'retweets'
+  match '/retweets_of_mine' => 'statuses#retweets_of_me', :as => 'retweets_of_mine'
   match '/following' => 'statuses#friends', :as => 'following'
   match '/followers' => 'statuses#followers', :as => 'followers'
   match '/oauth_complete' => 'sessions#oauth_complete'
