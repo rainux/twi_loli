@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :set_twitter_auth
   before_filter :set_page_vars
+  before_filter :get_api_rate_limit_status
 
   private
   def current_user
@@ -26,5 +27,9 @@ class ApplicationController < ActionController::Base
     params[:page] = 1 unless params[:page]
     @newer_page = params[:page].to_i - 1
     @older_page = params[:page].to_i + 1
+  end
+
+  def get_api_rate_limit_status
+    @api_rate_limit_status = Twitter.account.rate_limit_status?
   end
 end
