@@ -16,4 +16,10 @@ module ApplicationHelper
       link_to tag, search_path(:q => tag[1..-1])
     end
   end
+
+  def extract_mentioned_users(tweet)
+    tweet.scan(%r{@[0-9A-Za-z_]+}).collect do |user|
+      user[1..-1]
+    end
+  end
 end

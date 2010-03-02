@@ -6,7 +6,9 @@
 
 - status.created_at = Time.zone.parse(status.created_at)
 
-%li.status{:id => "status_#{status.id}", 'data-id' => status.id, 'data-user' => status.user.screen_name}
+- mentioned_users = (extract_mentioned_users(status.text) - [current_user.screen_name, status.user.screen_name]).uniq
+
+%li.status{:id => "status_#{status.id}", 'data-id' => status.id, 'data-user' => status.user.screen_name, 'data-mentioned-users' => mentioned_users.join(' ')}
   %span.thumb
     = link_to image_tag(status.user.profile_image_url, :alt => status.user.name, :size => '48x48'), user_path(status.user.screen_name), :title => status.user.name
 
@@ -37,6 +39,10 @@
       %li
         %span.reply
           = link_to 'Reply', root_path(:in_reply_to => status.user.screen_name, :in_reply_to_status_id => status.id), :title => "Reply to #{status.user.screen_name}"
+      - unless mentioned_users.empty?
+        %li
+          %span.reply-all
+            = link_to 'Reply all', root_path(:in_reply_to => status.user.screen_name, :in_reply_to_status_id => status.id, :in_reply_to_mentioned_users => mentioned_users.join(' ')), :title => "Reply to #{mentioned_users.unshift(status.user.screen_name).to_sentence :last_word_connector => ' and '}"
       %li
         %span.retweet-with-comment
           = link_to 'Retweet with comment', root_path(:retweet_id => status.id), :title => 'Retweet with comment (Traditional RT)'

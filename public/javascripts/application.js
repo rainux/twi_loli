@@ -98,6 +98,33 @@ jQuery(function ($) {
     });
 
 
+    $('.reply-all > a').click(function() {
+
+      var $status = $('#status_status');
+
+      if ($status.length) {
+
+        var $tweet = $(this).parents('.status'),
+          mentioned_users;
+
+        mentioned_users = $tweet.attr('data-mentioned-users').split(' ');
+        mentioned_users.unshift($tweet.attr('data-user'))
+        mentioned_users = $.map(mentioned_users, function(user) {
+          return '@' + user;
+        });
+
+        $('#status_update_box').removeClass('hide');
+        $('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
+        $status.val(mentioned_users.join(' ') + ' ')
+          .focus()
+          .keyup()
+          [0].setSelectionRange(256, 256);
+
+        return false;
+      }
+    });
+
+
     $('.retweet-with-comment > a').click(function() {
 
       var $status = $('#status_status');
