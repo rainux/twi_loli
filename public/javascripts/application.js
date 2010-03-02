@@ -4,7 +4,23 @@ jQuery(function ($) {
 
   $(function() {
 
-    $('#status_status').keyup(function() {
+    var statusIntervalId;
+
+    $('#status_status').focus(function() {
+
+      var $this = $(this);
+
+      statusIntervalId = setInterval(function() {
+
+        $this.keyup();
+      }, 100)
+    })
+
+    .blur(function() {
+      clearInterval(statusIntervalId);
+    })
+
+    .keyup(function() {
 
       var $this = $(this),
         count,
