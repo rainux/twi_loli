@@ -16,9 +16,9 @@
         %h1= link_to 'TwiLoli', root_path
         %ul
           - unless logged_in?
-            %li= link_to 'Sign in with Twitter', new_session_path
+            %li= link_to 'Sign in', signin_path
           - else
-            %li= link_to 'Sign out', session_path, :method => :delete
+            %li= link_to 'Sign out', signout_path
 
       #content
         - if notice
@@ -48,26 +48,24 @@
               %li= link_to yield(:following), following_path
               %li= link_to yield(:followers), followers_path
 
+          %ul#primary_nav
+            %li
+              = link_to 'Home', root_path
+            %li
+              = link_to 'Mentions', mentions_path
+            %li
+              = link_to 'Retweets By Others', retweets_by_others_path
+            %li
+              = link_to 'Retweets By Me', retweets_path
+            %li
+              = link_to 'My Retweets', retweets_of_mine_path
 
-
-        %ul#primary_nav
-          %li
-            = link_to 'Home', root_path
-          %li
-            = link_to 'Mentions', mentions_path
-          %li
-            = link_to 'Retweets By Others', retweets_by_others_path
-          %li
-            = link_to 'Retweets By Me', retweets_path
-          %li
-            = link_to 'My Retweets', retweets_of_mine_path
-
-        #utilities
-          %h4 API stats
-          %ul.api-stats
-            %li= "Hourly limit: #{@api_rate_limit_status.hourly_limit}"
-            %li= "Remaining hits: #{@api_rate_limit_status.remaining_hits}"
-            %li= "Will reset in #{@api_rate_limit_status.reset_time_in_seconds / 60} mins."
+          #utilities
+            %h4 API stats
+            %ul.api-stats
+              %li= "Hourly limit: #{@api_rate_limit_status.hourly_limit}"
+              %li= "Remaining hits: #{@api_rate_limit_status.remaining_hits}"
+              %li= "Will reset in #{@api_rate_limit_status.reset_time_in_seconds / 60} mins."
 
 
 

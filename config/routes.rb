@@ -16,15 +16,17 @@ TwiLoli::Application.routes.draw do |map|
   resource :search
   resource :session
 
-  root :to => 'statuses#home_timeline'
-  match '/mentions' => 'statuses#mentions', :as => 'mentions'
-  match '/retweets_by_others' => 'statuses#retweeted_to_me', :as => 'retweets_by_others'
-  match '/retweets' => 'statuses#retweeted_by_me', :as => 'retweets'
-  match '/retweets_of_mine' => 'statuses#retweets_of_me', :as => 'retweets_of_mine'
-  match '/following' => 'statuses#friends', :as => 'following'
-  match '/followers' => 'statuses#followers', :as => 'followers'
-  match '/oauth_complete' => 'sessions#oauth_complete'
-  match ':user_id' => 'statuses#user_timeline', :as => 'user'
+  root :to                    => 'statuses#home_timeline'
+  match '/mentions'           => 'statuses#mentions',         :as => 'mentions'
+  match '/retweets_by_others' => 'statuses#retweeted_to_me',  :as => 'retweets_by_others'
+  match '/retweets'           => 'statuses#retweeted_by_me',  :as => 'retweets'
+  match '/retweets_of_mine'   => 'statuses#retweets_of_me',   :as => 'retweets_of_mine'
+  match '/following'          => 'statuses#friends',          :as => 'following'
+  match '/followers'          => 'statuses#followers',        :as => 'followers'
+  match '/signin'             => 'sessions#new',              :as => 'signin'
+  match '/signout'            => 'sessions#destroy',          :as => 'signout'
+  match '/oauth_complete'     => 'sessions#oauth_complete'
+  match ':user_id'            => 'statuses#user_timeline',    :as => 'user'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

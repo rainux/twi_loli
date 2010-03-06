@@ -2,7 +2,21 @@ class SessionsController < ApplicationController
   def new
     oauth_instance.consumer_key = AppConfig[:twitter][:consumer_key]
     oauth_instance.consumer_secret = AppConfig[:twitter][:consumer_secret]
-    redirect_to oauth_login_path
+  end
+
+  def create
+    Twitter.auth = {
+      :type => :basic,
+      :username => params[:session][:username],
+      :password => params[:session][:password]
+    }
+    session[:user] = Twitter.account.verify_credentials?
+    session[:auth] = Twitter.auth
+    redirect_back_or_default root_path
+
+  rescue Grackle::TwitterError => error
+    flash[:error] = JSON.parse(error.response_body)['error']
+    redirect_to new_session_path
   end
 
   def oauth_complete

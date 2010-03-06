@@ -1,0 +1,17 @@
+.sign-in
+  %h1 Sign in
+
+  %h2
+    = link_to '- with Twitter (OAuth)', oauth_login_path
+
+  %h2 - with your Twitter account
+
+  - form_for :session, :url => session_path do |f|
+    .username
+      = f.label :username
+      = f.text_field :username
+    .password
+      = f.label :password
+      = f.password_field :password
+    .submit
+      = f.submit 'Sign in'

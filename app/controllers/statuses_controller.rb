@@ -1,4 +1,5 @@
 class StatusesController < ApplicationController
+  before_filter :require_user, :except => [:public_timeline, :user_timeline]
   respond_to :html, :json, :xml
 
   def public_timeline
