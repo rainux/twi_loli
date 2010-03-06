@@ -132,12 +132,18 @@ jQuery(function ($) {
       if ($status.length) {
 
         var $tweet = $(this).parents('.status');
-        var content = $tweet.find('.content').text();
+        var $content = $tweet.find('.content').clone();
+
+        $content.find('a[data-truncated=true]').each(function() {
+
+            var $this = $(this);
+            $this.text($this.attr('href'));
+          })
 
         $('#status_update_box').removeClass('hide');
         $('#status_in_reply_to_status_id').val('');
         $status
-          .val('RT @' + $tweet.attr('data-user') + ': ' + content)
+          .val('RT @' + $tweet.attr('data-user') + ': ' + $content.text())
           .focus()
           .keyup()
           [0].setSelectionRange(0, 0);
