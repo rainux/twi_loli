@@ -1,0 +1,38 @@
+- content_for :sidebar do
+  - if logged_in?
+    .profile
+      .user-icon
+        - content_for :user_icon do
+          = image_tag(current_user.profile_image_url, :alt => current_user.name, :size => '48x48')
+          %span= current_user.screen_name
+          %span
+            %span= "#{current_user.statuses_count} tweets"
+        = link_to yield(:user_icon), user_path(current_user.screen_name), :title => current_user.name
+      %ul.stats
+        - content_for :following do
+          %span= current_user.friends_count
+          %span following
+        - content_for :followers do
+          %span= current_user.followers_count
+          %span followers
+        %li= link_to yield(:following), following_path
+        %li= link_to yield(:followers), followers_path
+
+    %ul#primary_nav
+      %li
+        = link_to 'Home', root_path
+      %li
+        = link_to 'Mentions', mentions_path
+      %li
+        = link_to 'Retweets By Others', retweets_by_others_path
+      %li
+        = link_to 'Retweets By Me', retweets_path
+      %li
+        = link_to 'My Retweets', retweets_of_mine_path
+
+    #utilities
+      %h4 API stats
+      %ul.api-stats
+        %li= "Hourly limit: #{@api_rate_limit_status.hourly_limit}"
+        %li= "Remaining hits: #{@api_rate_limit_status.remaining_hits}"
+        %li= "Will reset in #{@api_rate_limit_status.reset_time_in_seconds / 60} mins."
