@@ -47,6 +47,6 @@ module TwiLoli
     config.middleware.use Rack::OAuth,
       :consumer_key => '',
       :consumer_secret => '',
-      :site => 'http://twitter.com'
+      :site => 'https://twitter.com'
   end
 end
