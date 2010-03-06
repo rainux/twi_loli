@@ -5,11 +5,22 @@ class SessionsController < ApplicationController
   end
 
   def create
-    Twitter.auth = {
-      :type => :basic,
-      :username => params[:session][:username],
-      :password => params[:session][:password]
-    }
+    if get_access_token
+      Twitter.auth = {
+        :type => :oauth,
+        :consumer_key => AppConfig[:twitter][:consumer_key],
+        :consumer_secret => AppConfig[:twitter][:consumer_secret],
+        :token => get_access_token.token,
+        :token_secret => get_access_token.secret
+      }
+    else
+      Twitter.auth = {
+        :type => :basic,
+        :username => params[:session][:username],
+        :password => params[:session][:password]
+      }
+    end
+
     session[:user] = Twitter.account.verify_credentials?
     session[:auth] = Twitter.auth
     redirect_back_or_default root_path
@@ -17,19 +28,6 @@ class SessionsController < ApplicationController
   rescue Grackle::TwitterError => error
     flash[:error] = JSON.parse(error.response_body)['error']
     redirect_to new_session_path
-  end
-
-  def oauth_complete
-    Twitter.auth = {
-      :type => :oauth,
-      :consumer_key => AppConfig[:twitter][:consumer_key],
-      :consumer_secret => AppConfig[:twitter][:consumer_secret],
-      :token => get_access_token.token,
-      :token_secret => get_access_token.secret
-    }
-    session[:auth] = Twitter.auth
-    session[:user] = Twitter.account.verify_credentials?
-    redirect_to root_path
   end
 
   def destroy
