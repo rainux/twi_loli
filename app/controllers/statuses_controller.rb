@@ -80,7 +80,7 @@ class StatusesController < ApplicationController
   ensure
     if request.xhr?
       if @status
-        respond_timeline([@status])
+        respond_timeline([@status], true)
       else
         render :json => {:error => error_message}
       end
@@ -110,14 +110,19 @@ class StatusesController < ApplicationController
     end
   end
 
-  def respond_timeline(statuses)
+  def respond_timeline(statuses, newly_created = false)
     if request.xhr?
-      html = render_to_string :partial => 'status.html.haml', :collection => statuses
-      render :json => {
+      html = render_to_string :partial => 'status.html.haml', :collection => statuses,
+        :locals => {:newly_created => newly_created}
+      data = {
         :html => html,
-        :count => statuses.size,
-        :max_id => statuses.empty? ? params[:since_id] : statuses.first.id
+        :count => statuses.size
       }
+      unless newly_created
+        data[:max_id] = statuses.empty? ? params[:since_id] : statuses.first.id
+      end
+
+      render :json => data
     else
       respond_with(statuses)
     end

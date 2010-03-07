@@ -118,6 +118,15 @@
 
     _showNewStatuses: function(event) {
 
+      var $buffered = this.$timeline.find('> li.status.buffered:not(.newly_created)');
+
+      if ($buffered.length) {
+
+        this.$timeline
+          .find('> li.status.newly_created')
+          .remove();
+      }
+
       this.$timeline
         .find('> li.status.buffered')
         .removeClass('buffered');
@@ -199,9 +208,10 @@
 
       if (data && data.count) {
 
-        this.$timeline
-          .attr('data-max-id', data.max_id)
-          .prepend(data.html);
+        if (data.max_id) {
+          this.$timeline.attr('data-max-id', data.max_id);
+        }
+        this.$timeline.prepend(data.html);
 
         var total_count = parseInt(this.$notifyBar.attr('data-count'), 10) +
           data.count;

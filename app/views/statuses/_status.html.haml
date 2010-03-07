@@ -10,10 +10,15 @@
 - if logged_in?
   - mentioned_users -= [current_user.screen_name]
 
+- newly_created = false unless defined?(newly_created)
+- li_class = []
+- li_class << 'buffered' if request.xhr?
+- li_class << 'newly_created' if newly_created
+
 %li.status{ |
   :id => "status_#{status.id}", 'data-id' => status.id, |
   'data-user' => status.user.screen_name, 'data-mentioned-users' => mentioned_users.join(' '), |
-  :class => request.xhr? ? 'buffered' : nil |
+  :class => li_class.empty? ? nil : li_class.join(' ') |
   } |
   - unless @body_id == 'profile'
     %span.thumb
