@@ -15,7 +15,7 @@
       - unless @user.url.blank?
         %li
           %span.label Web
-          %span= link_to truncate(@user.url, 25), @user.url, :title => @user.url
+          %span= link_to truncate(@user.url, :length => 25), @user.url, :title => @user.url
       - unless @user.description.blank?
         %li
           %span.label Bio

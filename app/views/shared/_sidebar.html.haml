@@ -22,7 +22,7 @@
       %li
         = link_to 'Home', root_path
       %li
-        = link_to 'Mentions', mentions_path
+        = link_to "@#{current_user.screen_name}", mentions_path
       %li
         = link_to 'Retweets By Others', retweets_by_others_path
       %li

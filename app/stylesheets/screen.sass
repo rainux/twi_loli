@@ -45,18 +45,22 @@ body.three-col
     !sidebar_columns = floor(7 * !blueprint_grid_columns / 24)
     +column(!sidebar_columns)
     :background #fcfcfc
+    ul
+      :margin 0
+      li
+        +clearfix
     .profile
       :padding 20px
       .section-links
         :float right
-      ul.about
-        :margin 0
-        li
-          +clearfix
-          .label
-            :font-weight bold
-    #primary_nav, #utilities
+      .label
+        :font-weight bold
+    #primary_nav
+      :padding 0 20px
+    #utilities
       :padding 20px
+      h4
+        :margin-bottom 0.2em
   #content
     // Two thirds of the grid columns, rounding up.
     // With 24 cols, this is 16.
