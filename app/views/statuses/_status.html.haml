@@ -6,7 +6,9 @@
 
 - status.created_at = Time.zone.parse(status.created_at)
 
-- mentioned_users = (extract_mentioned_users(status.text) - [current_user.screen_name, status.user.screen_name]).uniq
+- mentioned_users = (extract_mentioned_users(status.text) - [status.user.screen_name]).uniq
+- if logged_in?
+  - mentioned_users -= [current_user.screen_name]
 
 %li.status{:id => "status_#{status.id}", 'data-id' => status.id, 'data-user' => status.user.screen_name, 'data-mentioned-users' => mentioned_users.join(' ')}
   %span.thumb
@@ -35,17 +37,18 @@
           %span{:title => original_status.created_at}= "#{distance_of_time_in_words_to_now(original_status.created_at, true)} ago"
           %span= raw "via #{original_status.source}"
 
-    %ul.actions-hover
-      %li
-        %span.reply
-          = link_to 'Reply', root_path(:in_reply_to => status.user.screen_name, :in_reply_to_status_id => status.id), :title => "Reply to #{status.user.screen_name}"
-      - unless mentioned_users.empty?
+    - if logged_in?
+      %ul.actions-hover
         %li
-          %span.reply-all
-            = link_to 'Reply all', root_path(:in_reply_to => status.user.screen_name, :in_reply_to_status_id => status.id, :in_reply_to_mentioned_users => mentioned_users.join(' ')), :title => "Reply to #{mentioned_users.unshift(status.user.screen_name).to_sentence :last_word_connector => ' and '}"
-      %li
-        %span.retweet-with-comment
-          = link_to 'Retweet with comment', root_path(:retweet_id => status.id), :title => 'Retweet with comment (Traditional RT)'
-      %li
-        %span.retweet
-          = link_to 'Retweet', '#', :title => 'Retweet (Official RT)'
+          %span.reply
+            = link_to 'Reply', root_path(:in_reply_to => status.user.screen_name, :in_reply_to_status_id => status.id), :title => "Reply to #{status.user.screen_name}"
+        - unless mentioned_users.empty?
+          %li
+            %span.reply-all
+              = link_to 'Reply all', root_path(:in_reply_to => status.user.screen_name, :in_reply_to_status_id => status.id, :in_reply_to_mentioned_users => mentioned_users.join(' ')), :title => "Reply to #{mentioned_users.unshift(status.user.screen_name).to_sentence :last_word_connector => ' and '}"
+        %li
+          %span.retweet-with-comment
+            = link_to 'Retweet with comment', root_path(:retweet_id => status.id), :title => 'Retweet with comment (Traditional RT)'
+        %li
+          %span.retweet
+            = link_to 'Retweet', '#', :title => 'Retweet (Official RT)'

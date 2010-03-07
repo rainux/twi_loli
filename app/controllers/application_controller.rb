@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
       Twitter.auth = session[:auth]
       Time.zone = session[:user].time_zone
     else
-      Twitter.auth = nil
+      Twitter.auth = {}
     end
   end
 
