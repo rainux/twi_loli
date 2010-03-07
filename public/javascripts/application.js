@@ -9,6 +9,7 @@
     _init: function() {
 
       this.$statusBox = $('#status_status');
+      this.$statusSubmit = $('#status_submit');
       this.$notifyBar = $('#new_statuses_notification');
       this.$statusesUpdate = $('#statuses_update');
       this.$timeline = $('#timeline');
@@ -84,6 +85,35 @@
 
       $('#status-field-char-counter').text(count).css('color', color);
       $('label.doing').text(this._buildDoingText());
+    },
+
+    _statusSubmitted: function(data, textStatus) {
+
+      if (data.error) {
+
+        $('#message .error')
+          .text(data.error)
+          .fadeIn('slow')
+          .delay(5000)
+          .fadeOut('slow');
+      } else {
+
+        this._addNewTweets.apply(this, arguments);
+        this.$statusBox.val('');
+      }
+    },
+
+    _submitStatus: function() {
+
+      var $form = $('#status_update_box form');
+
+      $.post(
+        $form.attr('action'),
+        $form.serialize(),
+        $.proxy(this, '_statusSubmitted')
+      );
+
+      return false;
     },
 
     _showNewStatuses: function(event) {
@@ -206,6 +236,7 @@
         .blur($.proxy(this, '_statusBoxAutoKeyupOff'))
         .keyup($.proxy(this, '_updateStatusBoxHint'));
 
+      this.$statusSubmit.click($.proxy(this, '_submitStatus'));
       this.$statusesUpdate.click($.proxy(this, '_showNewStatuses'));
 
       $('.reply > a').live('click', $.proxy(this, '_reply'));

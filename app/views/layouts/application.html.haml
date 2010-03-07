@@ -21,10 +21,9 @@
             %li= link_to 'Sign out', signout_path
 
       #content
-        - if notice
-          %p.notice= notice
-        - if flash[:error]
-          %p.error= flash[:error]
+        #message
+          %p.notice{:class => notice ? nil : 'hide'}= notice
+          %p.error{:class => flash[:error] ? nil : 'hide'}= flash[:error]
 
         =yield
 

@@ -69,16 +69,25 @@ class StatusesController < ApplicationController
     params[:status][:status].strip!
     raise "Can't update with blank status." if params[:status][:status].blank?
 
-    Twitter.statuses.update! params[:status].merge(:source => 'TwiLoli')
+    @status = Twitter.statuses.update! params[:status].merge(:source => 'TwiLoli')
 
   rescue Grackle::TwitterError => error
-    flash[:error] = JSON.parse(error.response_body)['error']
+    error_message = JSON.parse(error.response_body)['error']
 
   rescue => error
-    flash[:error] = error.message
+    error_message = error.message
 
   ensure
-    redirect_to :back
+    if request.xhr?
+      if @status
+        respond_timeline([@status])
+      else
+        render :json => {:error => error_message}
+      end
+    else
+      flash[:error] = error_message
+      redirect_to :back
+    end
   end
 
   def show
