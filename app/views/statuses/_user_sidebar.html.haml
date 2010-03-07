@@ -1,0 +1,36 @@
+- content_for :sidebar do
+  .profile
+    %ul.about
+      - unless @user.name.blank?
+        %li
+          %span.label Name
+          %span= @user.name
+      - unless @user.location.blank?
+        %li
+          %span.label Location
+          %span= @user.location
+      - unless @user.url.blank?
+        %li
+          %span.label Web
+          %span= link_to truncate(@user.url, 25), @user.url, :title => @user.url
+      - unless @user.description.blank?
+        %li
+          %span.label Bio
+          %span= @user.description
+      %li
+        %span.label Joined
+        %span= Time.zone.parse(@user.created_at).to_date.to_s :long_ordinal
+      %li
+        %span.label Tweets per day
+        %span ~#{'%.2f' % (@user.statuses_count.to_f / |
+          (Time.zone.now.to_date - Time.zone.parse(@user.created_at).to_date).to_f)} |
+
+    %ul.stats
+      - content_for :following do
+        %span= @user.friends_count
+        %span following
+      - content_for :followers do
+        %span= @user.followers_count
+        %span followers
+      %li= link_to yield(:following), user_following_path
+      %li= link_to yield(:followers), user_followers_path
