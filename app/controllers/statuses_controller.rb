@@ -65,7 +65,7 @@ class StatusesController < ApplicationController
     flash[:error] = JSON.parse(error.response_body)['error']
 
   ensure
-    redirect_to root_path
+    redirect_to :back
   end
 
   def show
