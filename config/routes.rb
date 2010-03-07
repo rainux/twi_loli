@@ -13,6 +13,14 @@ TwiLoli::Application.routes.draw do |map|
     end
   end
 
+  resources :users do
+    resources :lists do
+      member do
+        get   :statuses
+      end
+    end
+  end
+
   resource :search
   resource :session
 
@@ -29,6 +37,7 @@ TwiLoli::Application.routes.draw do |map|
   match ':user_id/following'  => 'statuses#friends',          :as => 'user_following'
   match ':user_id/followers'  => 'statuses#followers',        :as => 'user_followers'
   match ':user_id'            => 'statuses#user_timeline',    :as => 'user'
+  match ':user_id/:id'        => 'lists#statuses',            :as => 'user_list'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

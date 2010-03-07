@@ -1,0 +1,9 @@
+- content_for :timeline_heading do
+  #timeline_heading
+    %h1= @list.slug
+
+- content_for :pagination do
+  = pagination :newer => user_list_path(:page => @newer_page), :older => user_list_path(:page => @older_page)
+
+= render :partial => 'statuses/update'
+= render :partial => 'statuses/timeline'

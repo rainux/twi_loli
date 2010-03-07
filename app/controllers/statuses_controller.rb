@@ -11,6 +11,7 @@ class StatusesController < ApplicationController
 
   def home_timeline
     @statuses = Twitter.statuses.home_timeline? @options
+    @lists = Twitter._(current_user.screen_name).lists?
 
     respond_timeline(@statuses)
   end
@@ -94,37 +95,5 @@ class StatusesController < ApplicationController
     @status = Twitter.statuses.show? :id => params[:id]
 
     respond_with(@status)
-  end
-
-  private
-  def prepare_options
-    @options = {
-      :page => params[:page]
-    }
-    if params[:since_id]
-      @options[:since_id] = params[:since_id]
-      @options[:count] = 200
-    end
-    if params[:max_id]
-      @options[:max_id] = params[:max_id]
-    end
-  end
-
-  def respond_timeline(statuses, newly_created = false)
-    if request.xhr?
-      html = render_to_string :partial => 'status.html.haml', :collection => statuses,
-        :locals => {:newly_created => newly_created}
-      data = {
-        :html => html,
-        :count => statuses.size
-      }
-      unless newly_created
-        data[:max_id] = statuses.empty? ? params[:since_id] : statuses.first.id
-      end
-
-      render :json => data
-    else
-      respond_with(statuses)
-    end
   end
 end

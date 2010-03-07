@@ -30,6 +30,14 @@
       %li
         = link_to 'My Retweets', retweets_of_mine_path
 
+    - if @lists
+      #lists
+        %h4 Lists
+        %ul
+        - @lists.lists.each do |list|
+          %li
+            = link_to list.slug, list.uri
+
     #utilities
       %h4 API stats
       %ul.api-stats

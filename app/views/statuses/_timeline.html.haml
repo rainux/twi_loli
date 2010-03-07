@@ -5,6 +5,6 @@
     = link_to '0 new tweet.', '', :id => 'statuses_update', :style => 'display: none'
 
   %ol#timeline{'data-max-id' => @statuses.empty? ? 0 : @statuses.first.id}
-    = render :partial => 'status', :collection => @statuses
+    = render :partial => 'statuses/status', :collection => @statuses
 
   = yield :pagination
