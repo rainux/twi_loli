@@ -109,6 +109,22 @@ body.three-col
       #timeline_heading
         h1
           :font-size 1.5em
+      #new_statuses_notification
+        #statuses_update
+          :background-color #ffc
+          :border-width 1px 0
+          :border-color #eeb
+          :border-style solid none
+          :padding .5em 1em
+          :color #333
+          :margin 1em 0
+          :display block
+          &:hover
+            :background-color #ffa
+            :border-color #dd9
+            :cursor pointer
+            :text-decoration none
+            :color #000
       ol#timeline
         :margin 0
         li.status
@@ -121,6 +137,8 @@ body.three-col
             :background #f7f7f7
             ul.actions-hover
               :visibility visible
+          &.buffered
+            :display none
           span.thumb
             :display block
             :position absolute

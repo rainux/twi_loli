@@ -4,6 +4,58 @@ jQuery(function ($) {
 
   $(function() {
 
+    var refreshingTweets = false;
+
+    setInterval(function() {
+
+      if (refreshingTweets) { return; }
+
+      refreshingTweets = true;
+
+      var $timeline = $('#timeline');
+
+      $.ajax({
+        type: 'GET',
+        data: {since_id: $timeline.attr('data-max-id')},
+        dataType: 'json',
+        success: function(data, textStatus) {
+
+          if (data && data.count) {
+
+            $timeline
+              .attr('data-max-id', data.max_id)
+              .prepend(data.html);
+
+            var $notify = $('#new_statuses_notification');
+            var total_count = parseInt($notify.attr('data-count')) + data.count;
+
+            $notify.attr('data-count', total_count);
+            $('#statuses_update')
+              .text(total_count + ' new tweets.')
+              .show();
+          }
+
+          refreshingTweets = false;
+        }
+      });
+
+    }, 2000 * 60);
+
+
+    $('#statuses_update').click(function() {
+
+      $('#timeline')
+        .find('> li.status.buffered')
+        .removeClass('buffered');
+
+      $('#new_statuses_notification').attr('data-count', 0);
+      $(this)
+        .text('0 new tweet.')
+        .hide();
+
+      return false;
+    });
+
     var statusIntervalId;
 
     $('#status_status').focus(function() {
@@ -78,7 +130,7 @@ jQuery(function ($) {
     });
 
 
-    $('.reply > a').click(function() {
+    $('.reply > a').live('click', function() {
 
       var $status = $('#status_status');
 
@@ -98,7 +150,7 @@ jQuery(function ($) {
     });
 
 
-    $('.reply-all > a').click(function() {
+    $('.reply-all > a').live('click', function() {
 
       var $status = $('#status_status');
 
@@ -125,7 +177,7 @@ jQuery(function ($) {
     });
 
 
-    $('.retweet-with-comment > a').click(function() {
+    $('.retweet-with-comment > a').live('click', function() {
 
       var $status = $('#status_status');
 

@@ -10,7 +10,11 @@
 - if logged_in?
   - mentioned_users -= [current_user.screen_name]
 
-%li.status{:id => "status_#{status.id}", 'data-id' => status.id, 'data-user' => status.user.screen_name, 'data-mentioned-users' => mentioned_users.join(' ')}
+%li.status{ |
+  :id => "status_#{status.id}", 'data-id' => status.id, |
+  'data-user' => status.user.screen_name, 'data-mentioned-users' => mentioned_users.join(' '), |
+  :class => request.xhr? ? 'buffered' : nil |
+  } |
   - unless @body_id == 'profile'
     %span.thumb
       = link_to image_tag(status.user.profile_image_url, :alt => status.user.name, :size => '48x48'), user_path(status.user.screen_name), :title => status.user.name

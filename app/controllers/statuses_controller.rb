@@ -1,53 +1,56 @@
 class StatusesController < ApplicationController
   before_filter :require_user, :except => [:public_timeline, :user_timeline]
+  before_filter :prepare_options, :except => [:following, :followers, :create, :show]
   respond_to :html, :json, :xml
 
   def public_timeline
-    @statuses = Twitter.statuses.public_timeline? :page => params[:page]
+    @statuses = Twitter.statuses.public_timeline? @options
 
-    respond_with(@statuses)
+    respond_timeline @statuses
   end
 
   def home_timeline
-    @statuses = Twitter.statuses.home_timeline? :page => params[:page]
+    @statuses = Twitter.statuses.home_timeline? @options
 
-    respond_with(@statuses)
+    respond_timeline(@statuses)
   end
 
   def user_timeline
     @body_id = 'profile'
-
     @user = Twitter.users.show? :screen_name => params[:user_id]
-    @statuses = Twitter.statuses.user_timeline? :screen_name => params[:user_id], :page => params[:page]
+
+    @options[:screen_name] = params[:user_id]
+    @statuses = Twitter.statuses.user_timeline? @options
+
   rescue Grackle::TwitterError => error
     @statuses = []
 
   ensure
-    respond_with(@statuses)
+    respond_timeline @statuses
   end
 
   def mentions
-    @statuses = Twitter.statuses.mentions? :page => params[:page]
+    @statuses = Twitter.statuses.mentions? @options
 
-    respond_with(@statuses)
+    respond_timeline @statuses
   end
 
   def retweeted_to_me
-    @statuses = Twitter.statuses.retweeted_to_me? :page => params[:page]
+    @statuses = Twitter.statuses.retweeted_to_me? @options
 
-    respond_with(@statuses)
+    respond_timeline @statuses
   end
 
   def retweeted_by_me
-    @statuses = Twitter.statuses.retweeted_by_me? :page => params[:page]
+    @statuses = Twitter.statuses.retweeted_by_me? @options
 
-    respond_with(@statuses)
+    respond_timeline @statuses
   end
 
   def retweets_of_me
-    @statuses = Twitter.statuses.retweets_of_me? :page => params[:page]
+    @statuses = Twitter.statuses.retweets_of_me? @options
 
-    respond_with(@statuses)
+    respond_timeline @statuses
   end
 
   def friends
@@ -82,5 +85,32 @@ class StatusesController < ApplicationController
     @status = Twitter.statuses.show? :id => params[:id]
 
     respond_with(@status)
+  end
+
+  private
+  def prepare_options
+    @options = {
+      :page => params[:page]
+    }
+    if params[:since_id]
+      @options[:since_id] = params[:since_id]
+      @options[:count] = 200
+    end
+    if params[:max_id]
+      @options[:max_id] = params[:max_id]
+    end
+  end
+
+  def respond_timeline(statuses)
+    if request.xhr?
+      html = render_to_string :partial => 'status.html.haml', :collection => statuses
+      render :json => {
+        :html => html,
+        :count => statuses.size,
+        :max_id => statuses.empty? ? params[:since_id] : statuses.first.id
+      }
+    else
+      respond_with(statuses)
+    end
   end
 end
