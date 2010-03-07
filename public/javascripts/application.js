@@ -1,84 +1,78 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
-jQuery(function ($) {
+(function($, window, undefined) {
 
-  $(function() {
+  var TwiLoli = {
 
-    var refreshingTweets = false;
+    _refreshingTimeline: false,
+    _statusBoxAutoKeyupIntervalId: null,
+    _refreshTimelineIntervalId: null,
 
-    setInterval(function() {
+    _init: function() {
 
-      if (refreshingTweets) { return; }
+      this.$statusBox = $('#status_status');
+      this.$notifyBar = $('#new_statuses_notification');
+      this.$statusesUpdate = $('#statuses_update');
+      this.$timeline = $('#timeline');
 
-      refreshingTweets = true;
+      return this;
+    },
 
-      var $timeline = $('#timeline');
+    _statusBoxAutoKeyupOn: function() {
 
-      $.ajax({
-        type: 'GET',
-        data: {since_id: $timeline.attr('data-max-id')},
-        dataType: 'json',
-        success: function(data, textStatus) {
+      this._statusBoxAutoKeyupIntervalId = setInterval($.proxy(function() {
 
-          if (data && data.count) {
+        this.$statusBox.keyup();
+      }, this), 100);
+    },
 
-            $timeline
-              .attr('data-max-id', data.max_id)
-              .prepend(data.html);
+    _statusBoxAutoKeyupOff: function() {
 
-            var $notify = $('#new_statuses_notification');
-            var total_count = parseInt($notify.attr('data-count')) + data.count;
+      clearInterval(this._statusBoxAutoKeyupIntervalId);
+    },
 
-            $notify.attr('data-count', total_count);
-            $('#statuses_update')
-              .text(total_count + ' new tweets.')
-              .show();
-          }
+    _buildDoingText: function() {
 
-          refreshingTweets = false;
+      var match, in_reply_to_status_id, in_reply_to;
+
+      in_reply_to_status_id = $('#status_in_reply_to_status_id').val();
+      if (in_reply_to_status_id) {
+
+        in_reply_to = $('#status_' + in_reply_to_status_id).attr('data-user');
+        match = this.$statusBox.val().match(
+          new RegExp('(^| )@' + in_reply_to + '(?= |$)')
+        );
+
+        if (match) {
+          return 'Reply to ' + in_reply_to +
+            "'s tweet(" + in_reply_to_status_id + '):';
         }
-      });
+      }
 
-    }, 2000 * 60);
+      match = this.$statusBox.val().match(/^\s*@(\w+)(?= |$)/);
+      if (match) {
+        return 'Reply to ' + match[1] + ':';
+      }
 
+      match = this.$statusBox.val().match(/RT @\w+\b.+/);
+      if (match) {
+        return 'Retweet with comment:';
+      }
 
-    $('#statuses_update').click(function() {
+      match = this.$statusBox.val().match(/(^| )@(\w+)(?= |$)/g);
+      if (match) {
+        match = $.map(match, function(name) {
+          return $.trim(name);
+        });
+        return 'Metioning ' + match.join(' ') + ':';
+      }
 
-      $('#timeline')
-        .find('> li.status.buffered')
-        .removeClass('buffered');
+      return "What's happening?";
+    },
 
-      $('#new_statuses_notification').attr('data-count', 0);
-      $(this)
-        .text('0 new tweet.')
-        .hide();
+    _updateStatusBoxHint: function() {
 
-      return false;
-    });
+      var count, color;
 
-    var statusIntervalId;
-
-    $('#status_status').focus(function() {
-
-      var $this = $(this);
-
-      statusIntervalId = setInterval(function() {
-
-        $this.keyup();
-      }, 100)
-    })
-
-    .blur(function() {
-      clearInterval(statusIntervalId);
-    })
-
-    .keyup(function() {
-
-      var $this = $(this),
-        count,
-        color;
-
-      count = 140 - $this.val().length;
+      count = 140 - this.$statusBox.val().length;
 
       if (count >= 20) {
         color = 'rgb(204, 204, 204)';
@@ -89,120 +83,167 @@ jQuery(function ($) {
       }
 
       $('#status-field-char-counter').text(count).css('color', color);
+      $('label.doing').text(this._buildDoingText());
+    },
 
-      function buildDoingText() {
+    _showNewStatuses: function(event) {
 
-        var match, in_reply_to_status_id, in_reply_to;
+      this.$timeline
+        .find('> li.status.buffered')
+        .removeClass('buffered');
 
-        in_reply_to_status_id = $('#status_in_reply_to_status_id').val();
-        if (in_reply_to_status_id) {
+      this.$notifyBar.attr('data-count', 0);
+      $(event.currentTarget)
+        .text('0 new tweet.')
+        .hide();
 
-          in_reply_to = $('#status_' + in_reply_to_status_id).attr('data-user');
-          match = $this.val().match(new RegExp('(^| )@' + in_reply_to + '(?= |$)'));
+      return false;
+    },
 
-          if (match) {
-            return 'Reply to ' + in_reply_to + "'s tweet(" + in_reply_to_status_id + '):';
-          }
-        }
+    _reply: function(event) {
 
-        match = $this.val().match(/^\s*@(\w+)(?= |$)/);
-        if (match) {
-          return 'Reply to ' + match[1] + ':';
-        }
+      if (this.$statusBox.length) {
 
-        match = $this.val().match(/RT @\w+\b.+/);
-        if (match) {
-          return 'Retweet with comment:';
-        }
-
-        match = $this.val().match(/(^| )@(\w+)(?= |$)/g);
-        if (match) {
-          match = $.map(match, function(name) {
-            return $.trim(name);
-          });
-          return 'Metioning ' + match.join(' ') + ':';
-        }
-
-        return "What's happening?";
-      }
-
-      $('label.doing').text(buildDoingText());
-    });
-
-
-    $('.reply > a').live('click', function() {
-
-      var $status = $('#status_status');
-
-      if ($status.length) {
-
-        var $tweet = $(this).parents('.status');
+        var $tweet = $(event.currentTarget).parents('.status');
 
         $('#status_update_box').removeClass('hide');
         $('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
-        $status.val('@' + $tweet.attr('data-user') + ' ')
+        this.$statusBox.val('@' + $tweet.attr('data-user') + ' ')
           .focus()
-          .keyup()
-          [0].setSelectionRange(256, 256);
+          .keyup()[0]
+          .setSelectionRange(256, 256);
 
         return false;
       }
-    });
+    },
 
+    _replyAll: function(event) {
 
-    $('.reply-all > a').live('click', function() {
+      if (this.$statusBox.length) {
 
-      var $status = $('#status_status');
+        var $tweet = $(event.currentTarget).parents('.status');
+        var mentioned_users = $tweet.attr('data-mentioned-users').split(' ');
 
-      if ($status.length) {
-
-        var $tweet = $(this).parents('.status'),
-          mentioned_users;
-
-        mentioned_users = $tweet.attr('data-mentioned-users').split(' ');
-        mentioned_users.unshift($tweet.attr('data-user'))
+        mentioned_users.unshift($tweet.attr('data-user'));
         mentioned_users = $.map(mentioned_users, function(user) {
           return '@' + user;
         });
 
         $('#status_update_box').removeClass('hide');
         $('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
-        $status.val(mentioned_users.join(' ') + ' ')
+        this.$statusBox.val(mentioned_users.join(' ') + ' ')
           .focus()
-          .keyup()
-          [0].setSelectionRange(256, 256);
+          .keyup()[0]
+          .setSelectionRange(256, 256);
 
         return false;
       }
-    });
+    },
 
+    _retweetWithComment: function(event) {
 
-    $('.retweet-with-comment > a').live('click', function() {
+      if (this.$statusBox.length) {
 
-      var $status = $('#status_status');
-
-      if ($status.length) {
-
-        var $tweet = $(this).parents('.status');
+        var $tweet = $(event.currentTarget).parents('.status');
         var $content = $tweet.find('.content').clone();
 
-        $content.find('a[data-truncated=true]').each(function() {
+        $content.find('a[data-truncated=true]').each(function(i, link) {
 
-            var $this = $(this);
-            $this.text($this.attr('href'));
-          })
+          var $link = $(link);
+          $link.text($link.attr('href'));
+        });
 
         $('#status_update_box').removeClass('hide');
         $('#status_in_reply_to_status_id').val('');
-        $status
+        this.$statusBox
           .val('RT @' + $tweet.attr('data-user') + ': ' + $content.text())
           .focus()
-          .keyup()
-          [0].setSelectionRange(0, 0);
+          .keyup()[0]
+          .setSelectionRange(0, 0);
 
         return false;
       }
+    },
+
+    _addNewTweets: function(data, textStatus) {
+
+      if (data && data.count) {
+
+        this.$timeline
+          .attr('data-max-id', data.max_id)
+          .prepend(data.html);
+
+        var total_count = parseInt(this.$notifyBar.attr('data-count'), 10) +
+          data.count;
+
+        this.$notifyBar.attr('data-count', total_count);
+        this.$statusesUpdate
+          .text(total_count + ' new tweets.')
+          .show();
+      }
+
+      this._refreshingTimeline = false;
+    },
+
+    _refreshTimeline: function() {
+
+      if (this._refreshingTimeline) { return; }
+
+      this._refreshingTimeline = true;
+
+      $.ajax({
+        type: 'GET',
+        data: {since_id: this.$timeline.attr('data-max-id')},
+        dataType: 'json',
+        success: $.proxy(this, '_addNewTweets')
+      });
+    },
+
+    bindEventHandlers: function() {
+
+      this.$statusBox
+        .focus($.proxy(this, '_statusBoxAutoKeyupOn'))
+        .blur($.proxy(this, '_statusBoxAutoKeyupOff'))
+        .keyup($.proxy(this, '_updateStatusBoxHint'));
+
+      this.$statusesUpdate.click($.proxy(this, '_showNewStatuses'));
+
+      $('.reply > a').live('click', $.proxy(this, '_reply'));
+      $('.reply-all > a').live('click', $.proxy(this, '_replyAll'));
+      $('.retweet-with-comment > a').live('click',
+        $.proxy(this, '_retweetWithComment')
+      );
+    },
+
+    run: function() {
+
+      this._init();
+      this.bindEventHandlers();
+
+      this._refreshTimelineIntervalId = setInterval(
+        $.proxy(this, '_refreshTimeline'), 2000 * 60
+      );
+
+      return this;
+    },
+
+    shutdown: function() {
+
+      clearInterval(this._refreshTimelineIntervalId);
+
+      return this;
+    }
+  };
+
+
+  $(function() {
+
+    TwiLoli.run();
+
+    $(window).unload(function() {
+
+      TwiLoli.shutdown();
     });
   });
 
-});
+})(jQuery, window);
