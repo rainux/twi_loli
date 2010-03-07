@@ -1,5 +1,8 @@
 - content_for :sidebar do
   .profile
+    %span.section-links
+      - if @user.protected
+        = image_tag 'icon_lock_sidebar.gif', :title => "This user's tweets are protected."
     %ul.about
       - unless @user.name.blank?
         %li

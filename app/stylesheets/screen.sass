@@ -47,6 +47,8 @@ body.three-col
     :background #fcfcfc
     .profile
       :padding 20px
+      .section-links
+        :float right
       ul.about
         :margin 0
         li
@@ -99,7 +101,7 @@ body.three-col
           :float left
           :margin-right 10px
     .section
-      :padding 0 20px
+      :padding 0 20px 20px
       #timeline_heading
         h1
           :font-size 1.5em
@@ -131,6 +133,11 @@ body.three-col
               :background-repeat no-repeat
               :background-image url("/images/sprite-icons.png")
               :background-position -128px -64px
+            .lock-icon
+              :background transparent url(/images/lock_icon_small.png) no-repeat scroll 0 50%
+              :display inline-block
+              :height 10px
+              :width 8px
           span.meta
             :display block
             :color #999
@@ -142,7 +149,7 @@ body.three-col
             li
               :display inline-block
       .pagination
-        :padding 20px 0
+        :padding-top 20px
         :text-align right
         a
           :background #eee
