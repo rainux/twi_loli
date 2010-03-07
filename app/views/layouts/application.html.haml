@@ -10,7 +10,7 @@
     = csrf_meta_tag
 
 
-  %body.three-col
+  %body.three-col{:id => @body_id}
     #container
       #header
         %h1= link_to 'TwiLoli', root_path

@@ -16,6 +16,15 @@ module ApplicationHelper
     end
   end
 
+  def bigger_image_url(image_url)
+    image_url.gsub(/_normal(\.\w{2,4})$/, '_bigger\1')
+  end
+
+  def twitter_url(path)
+    path = path[1..-1] if path[0..0] == '/'
+    "https://twitter.com/#{path}"
+  end
+
   private
   def auto_link_urls(tweet)
     tweet.gsub %r{[0-9A-Za-z]{2,4}://([0-9A-Za-z_-]+\.)+[0-9A-Za-z]*[0-9A-Za-z/+=%&_.~?:\[\]-]*} do |url|

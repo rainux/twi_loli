@@ -2,5 +2,11 @@
   = pagination :newer => user_path(:page => @newer_page), :older => user_path(:page => @older_page)
 
 = render :partial => 'update', :locals => {:hide => true}
+
+.profile
+  %h2
+    = link_to image_tag(bigger_image_url(@user.profile_image_url), :alt => @user.name, :size => '73x73'), twitter_url(@user.screen_name), :title => @user.name
+    %div= @user.screen_name
+
 = render :partial => 'timeline'
 = render :partial => 'user_sidebar'

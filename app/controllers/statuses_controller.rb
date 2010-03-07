@@ -17,6 +17,7 @@ class StatusesController < ApplicationController
   def user_timeline
     @user = Twitter.users.show? :screen_name => params[:user_id]
     @statuses = Twitter.statuses.user_timeline? :screen_name => params[:user_id], :page => params[:page]
+    @body_id = 'profile'
 
     respond_with(@statuses)
   end
