@@ -1,10 +1,60 @@
 (function($, window, undefined) {
 
+  var DateHelper = {
+
+    time_ago_in_words_with_parsing: function(from_time, include_seconds) {
+
+      var date = new Date;
+      date.setTime(Date.parse(from_time));
+      return this.time_ago_in_words(date, include_seconds);
+    },
+
+    time_ago_in_words: function(from_time, include_seconds) {
+
+      return this.distance_of_time_in_words(from_time, new Date, include_seconds);
+    },
+
+    distance_of_time_in_words: function(from_time, to_time, include_seconds) {
+
+      var distance_in_seconds = (to_time - from_time) / 1000;
+      var distance_in_minutes = Math.round(distance_in_seconds / 60);
+
+      if (distance_in_minutes < 2) {
+        if (include_seconds) {
+          if (distance_in_seconds < 5) { return 'less than 5 seconds ago'; }
+          if (distance_in_seconds < 10) { return 'less than 10 seconds ago'; }
+          if (distance_in_seconds < 20) { return 'less than 20 seconds ago'; }
+          if (distance_in_seconds < 40) { return 'half a minute ago'; }
+          if (distance_in_seconds < 60) { return 'less than a minute ago'; }
+          return '1 minute ago';
+        } else {
+          if (distance_in_minutes == 0) {
+            return 'less than a minute ago';
+          } else {
+            return '1 minute ago';
+          }
+        }
+      }
+
+      if (distance_in_minutes < 45) { return distance_in_minutes + ' minutes ago'; }
+      if (distance_in_minutes < 90) { return 'about 1 hour ago'; }
+      if (distance_in_minutes < 1440) { return 'about ' + Math.round(distance_in_minutes / 60) + ' hours ago'; }
+      if (distance_in_minutes < 2530) { return '1 day ago'; }
+      if (distance_in_minutes < 43200) { return Math.round(distance_in_minutes / 1440) + ' days ago'; }
+      if (distance_in_minutes < 86400) { return 'about 1 month ago'; }
+      if (distance_in_minutes < 525600) { return 'about ' + Math.round(distance_in_minutes / 43200) + ' months ago'; }
+      if (distance_in_minutes < 1051200) { return 'about 1 year ago'; }
+
+      return 'about ' + Math.round(distance_in_minutes / 525600) + ' years ago';
+    }
+  };
+
   var TwiLoli = {
 
     _refreshingTimeline: false,
     _statusBoxAutoKeyupIntervalId: null,
     _refreshTimelineIntervalId: null,
+    _updateRelativeTimeIntervalId: null,
 
     _init: function() {
 
@@ -239,6 +289,17 @@
       });
     },
 
+    _updateRelativeTime: function() {
+
+      $('[data-time]').each(function(i, element) {
+
+        var $element = $(element);
+        var time = parseInt($element.attr('data-time'), 10) * 1000;
+
+        $element.text(DateHelper.time_ago_in_words(time, true));
+      });
+    },
+
     bindEventHandlers: function() {
 
       this.$statusBox
@@ -264,6 +325,9 @@
       this._refreshTimelineIntervalId = setInterval(
         $.proxy(this, '_refreshTimeline'), 2000 * 60
       );
+      this._updateRelativeTimeIntervalId = setInterval(
+        $.proxy(this, '_updateRelativeTime'), 1000 * 10
+      );
 
       return this;
     },
@@ -271,6 +335,7 @@
     shutdown: function() {
 
       clearInterval(this._refreshTimelineIntervalId);
+      clearInterval(this._updateRelativeTimeIntervalId);
 
       return this;
     }
