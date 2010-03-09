@@ -10,6 +10,8 @@ require 'active_resource/railtie'
 # Auto-require default libraries and those for the current Rails environment.
 Bundler.require :default, Rails.env
 
+require 'lib/twi_loli/logger'
+
 module TwiLoli
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -48,5 +50,7 @@ module TwiLoli
       :consumer_key => '',
       :consumer_secret => '',
       :site => 'https://twitter.com'
+
+    config.middleware.use TwiLoli::Logger
   end
 end
