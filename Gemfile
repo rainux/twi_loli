@@ -12,6 +12,7 @@ gem 'rails', '3.0.0.beta'
 gem 'rack-oauth'
 gem 'grackle'
 gem 'compass'
+gem 'hashie'
 
 ## Bundle gems used only in certain environments:
 # gem 'rspec', :group => :test
