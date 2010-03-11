@@ -25,7 +25,7 @@
       = link_to image_tag(status.user.profile_image_url, :alt => status.user.name, :size => '48x48'), user_path(status.user.screen_name), :title => status.user.name
 
   %span.status-body
-    - if original_status.respond_to? :retweeted_status
+    - if original_status && original_status.retweeted_status
       %span.retweet-icon
 
     - unless @body_id == 'profile'
@@ -44,7 +44,7 @@
       - if status.in_reply_to_status_id
         = link_to "in reply to #{status.in_reply_to_screen_name}", status_path(status.in_reply_to_status_id)
 
-    - if original_status.respond_to? :retweeted_status
+    - if original_status && original_status.retweeted_status
       %span.meta.retweet-meta
         %span
           = 'Retweeted by'
