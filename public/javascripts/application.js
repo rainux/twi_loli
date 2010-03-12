@@ -177,9 +177,15 @@
           .remove();
       }
 
-      this.$timeline
+      $buffered = this.$timeline
         .find('> li.status.buffered')
         .removeClass('buffered');
+
+      var height = _.reduce($buffered, 0, function(memo, li) {
+        return memo + $(li).outerHeight();
+      });
+
+      window.scrollBy(0, height);
 
       this.$notifyBar.attr('data-count', 0);
       $(event.currentTarget)
