@@ -348,14 +348,14 @@
       this.$statusesUpdate.click($.proxy(this, '_showNewStatuses'));
 
       this.$timeline
-        .delegate('.reply > a', 'click', $.proxy(this, '_reply'))
-        .delegate('.reply-all > a', 'click',
+        .delegate('a.reply', 'click', $.proxy(this, '_reply'))
+        .delegate('a.reply-all', 'click',
           $.proxy(this, '_replyAll')
         )
-        .delegate('.retweet-with-comment > a', 'click',
+        .delegate('a.retweet-with-comment', 'click',
           $.proxy(this, '_retweetWithComment')
         )
-        .delegate('.retweet > a', 'click', $.proxy(this, '_retweet'));
+        .delegate('a.retweet', 'click', $.proxy(this, '_retweet'));
     },
 
     run: function() {
