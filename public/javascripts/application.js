@@ -316,11 +316,14 @@
       this.$statusSubmit.click($.proxy(this, '_submitStatus'));
       this.$statusesUpdate.click($.proxy(this, '_showNewStatuses'));
 
-      $('.reply > a').live('click', $.proxy(this, '_reply'));
-      $('.reply-all > a').live('click', $.proxy(this, '_replyAll'));
-      $('.retweet-with-comment > a').live('click',
-        $.proxy(this, '_retweetWithComment')
-      );
+      this.$timeline
+        .delegate('.reply > a', 'click', $.proxy(this, '_reply'))
+        .delegate('.reply-all > a', 'click',
+          $.proxy(this, '_replyAll')
+        )
+        .delegate('.retweet-with-comment > a', 'click',
+          $.proxy(this, '_retweetWithComment')
+        );
     },
 
     run: function() {
