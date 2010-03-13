@@ -96,4 +96,23 @@ class StatusesController < ApplicationController
 
     respond_with(@status)
   end
+
+  def retweet
+    @status = Twitter.statuses.retweet! :id => params[:id]
+
+  rescue Grackle::TwitterError => error
+    error_message = JSON.parse(error.response_body)['error']
+
+  ensure
+    if request.xhr?
+      if @status
+        respond_timeline([@status], true)
+      else
+        render :json => {:error => error_message}
+      end
+    else
+      flash[:error] = error_message
+      redirect_to :back
+    end
+  end
 end

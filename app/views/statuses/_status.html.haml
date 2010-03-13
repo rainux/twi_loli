@@ -68,4 +68,5 @@
             = link_to 'Retweet with comment', root_path(:retweet_id => status.id), :title => 'Retweet with comment (Traditional RT)'
         %li
           %span.retweet
-            = link_to 'Retweet', '#', :title => 'Retweet (Official RT)'
+            = link_to 'Retweet', '#', :title => 'Retweet (Official RT)', |
+              'data-url' => retweet_status_path(status.id) |

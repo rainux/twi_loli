@@ -11,6 +11,9 @@ TwiLoli::Application.routes.draw do |map|
       get   :friends
       get   :followers
     end
+    member do
+      put   :retweet
+    end
   end
 
   resources :users do

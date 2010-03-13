@@ -260,6 +260,37 @@
       }
     },
 
+    _retweet: function(event) {
+
+      var $retweetLink = $(event.currentTarget);
+      var tweetId = $retweetLink.parents('.status:first').attr('data-id');
+
+      $.ajax({
+        type: 'PUT',
+        url: $retweetLink.attr('data-url'),
+        data: {}, // Google Chrome will post an 'undefined' without this
+        dataType: 'json',
+        success: $.proxy(function(data, textStatus) {
+
+          if (_(data).chain().keys().include('error').value()) {
+
+            $('#message .error')
+              .text('Error retweet this tweet, maybe you already retweeted it?')
+              .fadeIn('slow')
+              .delay(5000)
+              .fadeOut('slow');
+          } else {
+
+            var $retweet = $(data.html);
+            $('#status_' + tweetId).replaceWith($retweet);
+            $('#' + $retweet.attr('id')).removeClass('buffered');
+          }
+        }, this)
+      });
+
+      return false;
+    },
+
     _addNewTweets: function(data, textStatus) {
 
       if (data && data.count) {
@@ -323,7 +354,8 @@
         )
         .delegate('.retweet-with-comment > a', 'click',
           $.proxy(this, '_retweetWithComment')
-        );
+        )
+        .delegate('.retweet > a', 'click', $.proxy(this, '_retweet'));
     },
 
     run: function() {
