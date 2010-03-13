@@ -37,3 +37,10 @@
         %span followers
       %li= link_to yield(:following), user_following_path
       %li= link_to yield(:followers), user_followers_path
+
+  %ul#primary_nav
+    - content_for :tweets_link do
+      %span Tweets
+      %span= number_with_delimiter(@user.statuses_count)
+    %li
+      = link_to yield(:tweets_link), user_path(@user.screen_name)
