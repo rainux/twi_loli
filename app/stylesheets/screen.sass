@@ -72,6 +72,11 @@ body.three-col
     // true means it's the last column in the row
     +column(!content_columns, true)
     :background #fff
+    #message
+      :position fixed
+      :z-index 999
+      :width = !blueprint_container_size - 10px
+      :top 50px
     p.error, p.notice
       :margin-bottom 0
     #status_update_box
