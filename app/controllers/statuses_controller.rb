@@ -94,7 +94,7 @@ class StatusesController < ApplicationController
   def show
     @status = Twitter.statuses.show? :id => params[:id]
 
-    respond_with(@status)
+    respond_timeline([@status])
   end
 
   def retweet

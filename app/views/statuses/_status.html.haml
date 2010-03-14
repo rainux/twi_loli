@@ -42,7 +42,10 @@
         'data-time' => status.created_at.to_i |
       %span= raw "via #{status.source}"
       - if status.in_reply_to_status_id
-        = link_to "in reply to #{status.in_reply_to_screen_name}", status_path(status.in_reply_to_status_id)
+        = link_to "in reply to #{status.in_reply_to_screen_name}", |
+          status_path(status.in_reply_to_status_id), |
+          :class => 'in-reply-to', |
+          'data-in-reply-to-status-id' => status.in_reply_to_status_id |
 
     - if original_status && original_status.retweeted_status
       %span.meta.retweet-meta

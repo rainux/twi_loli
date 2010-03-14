@@ -291,6 +291,96 @@
       return false;
     },
 
+    _flashExistingInReplyTo: function($in_reply_to_link) {
+
+      var in_reply_to_status_id = $in_reply_to_link.attr('data-in-reply-to-status-id');
+
+      var $in_reply_to_tweet = $in_reply_to_link
+        .parents('.status:last')
+        .find('#status_' + in_reply_to_status_id);
+
+      if ($in_reply_to_tweet.length) {
+
+        $in_reply_to_tweet.fadeTo('normal', 0.1, function() {
+          $(this).fadeTo('normal', 1);
+        });
+        return true;
+      }
+    },
+
+    _loadInReplyToFromTimeline: function($container, $in_reply_to_link) {
+
+      var in_reply_to_status_id = $in_reply_to_link.attr('data-in-reply-to-status-id');
+
+      var $in_reply_to_tweet = $('#status_' + in_reply_to_status_id + ':first');
+
+      if ($in_reply_to_tweet.length) {
+
+        $in_reply_to_tweet = $in_reply_to_tweet.clone();
+        $in_reply_to_tweet.find('.conversations').remove();
+
+        $container.find('.conversations').append($in_reply_to_tweet);
+
+        $in_reply_to_link = $in_reply_to_tweet.find('.in-reply-to:first');
+        if ($in_reply_to_link.length) {
+          this._loadInReplyTo($container, $in_reply_to_link);
+        }
+        return true;
+      }
+    },
+
+    _loadInReplyTo: function($container, $in_reply_to_link) {
+
+      if (this._flashExistingInReplyTo($in_reply_to_link)) { return; }
+      if (this._loadInReplyToFromTimeline($container, $in_reply_to_link)) { return; }
+
+      $.ajax({
+        type: 'GET',
+        url: $in_reply_to_link.attr('href'),
+        data: {}, // Google Chrome will post an 'undefined' without this
+        dataType: 'json',
+        success: $.proxy(function(data, textStatus) {
+
+          if (data.error) {
+
+            $('#message .error')
+              .text(data.error)
+              .fadeIn('slow')
+              .delay(5000)
+              .fadeOut('slow');
+          } else {
+
+            var $tweet = $(data.html).removeClass('buffered');
+            $container.find('.conversations').append($tweet);
+
+            $in_reply_to_link = $tweet.find('.in-reply-to');
+            if ($in_reply_to_link.length) {
+              this._loadInReplyTo($container, $in_reply_to_link);
+            }
+          }
+        }, this)
+      });
+    },
+
+    _loadConversation: function(event) {
+
+      var $in_reply_to_link = $(event.currentTarget);
+      var $container = $in_reply_to_link.parents('.status:first');
+      var $conversations = $container.find('.conversations');
+
+      if ($conversations.length) {
+        $conversations.toggle();
+      } else {
+        $container.append(
+          $('<ol />').attr('class', 'conversations')
+        );
+      }
+
+      this._loadInReplyTo($container, $in_reply_to_link);
+
+      return false;
+    },
+
     _addNewTweets: function(data, textStatus) {
 
       if (data && data.count) {
@@ -355,7 +445,8 @@
         .delegate('a.retweet-with-comment', 'click',
           $.proxy(this, '_retweetWithComment')
         )
-        .delegate('a.retweet', 'click', $.proxy(this, '_retweet'));
+        .delegate('a.retweet', 'click', $.proxy(this, '_retweet'))
+        .delegate('a.in-reply-to', 'click', $.proxy(this, '_loadConversation'));
     },
 
     run: function() {
