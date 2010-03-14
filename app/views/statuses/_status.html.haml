@@ -44,6 +44,7 @@
       - if status.in_reply_to_status_id
         = link_to "in reply to #{status.in_reply_to_screen_name}", |
           status_path(status.in_reply_to_status_id), |
+          :title => 'Hold Ctrl then click to show full thread.', |
           :class => 'in-reply-to', |
           'data-in-reply-to-status-id' => status.in_reply_to_status_id |
 

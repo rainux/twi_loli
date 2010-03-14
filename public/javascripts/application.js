@@ -291,7 +291,7 @@
       return false;
     },
 
-    _flashExistingInReplyTo: function($inReplyToLink) {
+    _flashExistingInReplyTo: function($container, $inReplyToLink, isFull) {
 
       var inReplyToStatusId = $inReplyToLink.attr('data-in-reply-to-status-id');
 
@@ -304,11 +304,14 @@
         $inReplyToTweet.fadeTo('normal', 0.1, function() {
           $(this).fadeTo('normal', 1);
         });
+
+        this._loadNextInReplyTo($container, $inReplyToLink, $inReplyToTweet, isFull);
+
         return true;
       }
     },
 
-    _loadInReplyToFromTimeline: function($container, $inReplyToLink) {
+    _loadInReplyToFromTimeline: function($container, $inReplyToLink, isFull) {
 
       var inReplyToStatusId = $inReplyToLink.attr('data-in-reply-to-status-id');
 
@@ -321,24 +324,27 @@
 
         $container.find('.conversations').append($inReplyToTweet);
 
-        this._loadNextInReplyTo($container, $inReplyToLink, $inReplyToTweet);
+        this._loadNextInReplyTo($container, $inReplyToLink, $inReplyToTweet, isFull);
 
         return true;
       }
     },
 
-    _loadNextInReplyTo: function($container, $inReplyToLink, $inReplyToTweet) {
+    _loadNextInReplyTo: function($container, $inReplyToLink, $inReplyToTweet, isFull) {
 
+      if (isFull) {
         $inReplyToLink = $inReplyToTweet.find('.in-reply-to:first');
         if ($inReplyToLink.length) {
-          this._loadInReplyTo($container, $inReplyToLink);
+          this._loadInReplyTo($container, $inReplyToLink, true);
         }
+      }
     },
 
-    _loadInReplyTo: function($container, $inReplyToLink) {
+    _loadInReplyTo: function($container, $inReplyToLink, isFull) {
 
-      if (this._flashExistingInReplyTo($inReplyToLink)) { return; }
-      if (this._loadInReplyToFromTimeline($container, $inReplyToLink)) { return; }
+      if (this._flashExistingInReplyTo( $container, $inReplyToLink, isFull)) { return; }
+
+      if (this._loadInReplyToFromTimeline( $container, $inReplyToLink, isFull)) { return; }
 
       $.ajax({
         type: 'GET',
@@ -359,7 +365,7 @@
             var $tweet = $(data.html).removeClass('buffered');
             $container.find('.conversations').append($tweet);
 
-            this._loadNextInReplyTo($container, $inReplyToLink, $tweet);
+            this._loadNextInReplyTo($container, $inReplyToLink, $tweet, isFull);
           }
         }, this)
       });
@@ -370,6 +376,7 @@
       var $inReplyToLink = $(event.currentTarget);
       var $container = $inReplyToLink.parents('.status:first');
       var $conversations = $container.find('.conversations');
+      var isFull = event.ctrlKey;
 
       if ($conversations.length) {
         $conversations.toggle();
@@ -379,7 +386,7 @@
         );
       }
 
-      this._loadInReplyTo($container, $inReplyToLink);
+      this._loadInReplyTo($container, $inReplyToLink, isFull);
 
       return false;
     },
