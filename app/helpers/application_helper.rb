@@ -25,6 +25,20 @@ module ApplicationHelper
     "https://twitter.com/#{path}"
   end
 
+  def profile_user
+    @user ? @user : (current_user ? current_user : nil)
+  end
+
+  def profile_background(profile_user)
+    result = []
+    result << "##{profile_user.profile_background_color}"
+    if profile_user.profile_background_image_url['/profile_background_images/']
+      result << "url('#{profile_user.profile_background_image_url}') fixed"
+      result << (profile_user.profile_background_tile ? 'repeat' : 'no-repeat')
+    end
+    result.join(' ')
+  end
+
   private
   def auto_link_urls(tweet)
     tweet.gsub %r{[0-9A-Za-z]{2,4}://([0-9A-Za-z_-]+\.)+[0-9A-Za-z]*[0-9A-Za-z/+=%&_.~?:\[\]-]*} do |url|
