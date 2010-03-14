@@ -321,12 +321,18 @@
 
         $container.find('.conversations').append($inReplyToTweet);
 
+        this._loadNextInReplyTo($container, $inReplyToLink, $inReplyToTweet);
+
+        return true;
+      }
+    },
+
+    _loadNextInReplyTo: function($container, $inReplyToLink, $inReplyToTweet) {
+
         $inReplyToLink = $inReplyToTweet.find('.in-reply-to:first');
         if ($inReplyToLink.length) {
           this._loadInReplyTo($container, $inReplyToLink);
         }
-        return true;
-      }
     },
 
     _loadInReplyTo: function($container, $inReplyToLink) {
@@ -353,10 +359,7 @@
             var $tweet = $(data.html).removeClass('buffered');
             $container.find('.conversations').append($tweet);
 
-            $inReplyToLink = $tweet.find('.in-reply-to');
-            if ($inReplyToLink.length) {
-              this._loadInReplyTo($container, $inReplyToLink);
-            }
+            this._loadNextInReplyTo($container, $inReplyToLink, $tweet);
           }
         }, this)
       });
