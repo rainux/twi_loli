@@ -204,7 +204,11 @@ body#profile
   #content
     .section
       ol#timeline
-        li.status
+        > li.status
           :padding-left 8px
-          span.status-body
+          > span.thumb
+            :display none
+          > span.status-body
             :margin-left 0
+            > .author-name
+              :display none

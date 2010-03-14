@@ -20,19 +20,17 @@
   'data-user' => status.user.screen_name, 'data-mentioned-users' => mentioned_users.join(' '), |
   :class => li_class.empty? ? nil : li_class.join(' ') |
   } |
-  - unless @body_id == 'profile'
-    %span.thumb
-      = link_to image_tag(status.user.profile_image_url, :alt => status.user.name, :size => '48x48'), user_path(status.user.screen_name), :title => status.user.name
+  %span.thumb
+    = link_to image_tag(status.user.profile_image_url, :alt => status.user.name, :size => '48x48'), user_path(status.user.screen_name), :title => status.user.name
 
   %span.status-body
     - if original_status && original_status.retweeted_status
       %span.retweet-icon
 
-    - unless @body_id == 'profile'
-      %strong
-        = link_to status.user.screen_name, user_path(status.user.screen_name), :title => status.user.name
-      - if status.user.protected
-        %span{:class => 'lock-icon', :title => "#{status.user.name}'s tweets are protected."}
+    %strong.author-name
+      = link_to status.user.screen_name, user_path(status.user.screen_name), :title => status.user.name
+    - if status.user.protected
+      %span{:class => 'lock-icon', :title => "#{status.user.name}'s tweets are protected."}
 
     %span.content= raw format_tweet(status.text)
 
