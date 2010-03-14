@@ -82,19 +82,19 @@
 
     _buildDoingText: function() {
 
-      var match, in_reply_to_status_id, in_reply_to;
+      var match, inReplyToStatusId, inReplyTo;
 
-      in_reply_to_status_id = $('#status_in_reply_to_status_id').val();
-      if (in_reply_to_status_id) {
+      inReplyToStatusId = $('#status_in_reply_to_status_id').val();
+      if (inReplyToStatusId) {
 
-        in_reply_to = $('#status_' + in_reply_to_status_id).attr('data-user');
+        inReplyTo = $('#status_' + inReplyToStatusId).attr('data-user');
         match = this.$statusBox.val().match(
-          new RegExp('(^| )@' + in_reply_to + '(?= |$)')
+          new RegExp('(^| )@' + inReplyTo + '(?= |$)')
         );
 
         if (match) {
-          return 'Reply to ' + in_reply_to +
-            "'s tweet(" + in_reply_to_status_id + '):';
+          return 'Reply to ' + inReplyTo +
+            "'s tweet(" + inReplyToStatusId + '):';
         }
       }
 
@@ -217,16 +217,16 @@
       if (this.$statusBox.length) {
 
         var $tweet = $(event.currentTarget).parents('.status');
-        var mentioned_users = $tweet.attr('data-mentioned-users').split(' ');
+        var mentionedUsers = $tweet.attr('data-mentioned-users').split(' ');
 
-        mentioned_users.unshift($tweet.attr('data-user'));
-        mentioned_users = $.map(mentioned_users, function(user) {
+        mentionedUsers.unshift($tweet.attr('data-user'));
+        mentionedUsers = $.map(mentionedUsers, function(user) {
           return '@' + user;
         });
 
         $('#status_update_box').removeClass('hide');
         $('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
-        this.$statusBox.val(mentioned_users.join(' ') + ' ')
+        this.$statusBox.val(mentionedUsers.join(' ') + ' ')
           .focus()
           .keyup()[0]
           .setSelectionRange(256, 256);
@@ -291,52 +291,52 @@
       return false;
     },
 
-    _flashExistingInReplyTo: function($in_reply_to_link) {
+    _flashExistingInReplyTo: function($inReplyToLink) {
 
-      var in_reply_to_status_id = $in_reply_to_link.attr('data-in-reply-to-status-id');
+      var inReplyToStatusId = $inReplyToLink.attr('data-in-reply-to-status-id');
 
-      var $in_reply_to_tweet = $in_reply_to_link
+      var $inReplyToTweet = $inReplyToLink
         .parents('.status:last')
-        .find('#status_' + in_reply_to_status_id);
+        .find('#status_' + inReplyToStatusId);
 
-      if ($in_reply_to_tweet.length) {
+      if ($inReplyToTweet.length) {
 
-        $in_reply_to_tweet.fadeTo('normal', 0.1, function() {
+        $inReplyToTweet.fadeTo('normal', 0.1, function() {
           $(this).fadeTo('normal', 1);
         });
         return true;
       }
     },
 
-    _loadInReplyToFromTimeline: function($container, $in_reply_to_link) {
+    _loadInReplyToFromTimeline: function($container, $inReplyToLink) {
 
-      var in_reply_to_status_id = $in_reply_to_link.attr('data-in-reply-to-status-id');
+      var inReplyToStatusId = $inReplyToLink.attr('data-in-reply-to-status-id');
 
-      var $in_reply_to_tweet = $('#status_' + in_reply_to_status_id + ':first');
+      var $inReplyToTweet = $('#status_' + inReplyToStatusId + ':first');
 
-      if ($in_reply_to_tweet.length) {
+      if ($inReplyToTweet.length) {
 
-        $in_reply_to_tweet = $in_reply_to_tweet.clone();
-        $in_reply_to_tweet.find('.conversations').remove();
+        $inReplyToTweet = $inReplyToTweet.clone();
+        $inReplyToTweet.find('.conversations').remove();
 
-        $container.find('.conversations').append($in_reply_to_tweet);
+        $container.find('.conversations').append($inReplyToTweet);
 
-        $in_reply_to_link = $in_reply_to_tweet.find('.in-reply-to:first');
-        if ($in_reply_to_link.length) {
-          this._loadInReplyTo($container, $in_reply_to_link);
+        $inReplyToLink = $inReplyToTweet.find('.in-reply-to:first');
+        if ($inReplyToLink.length) {
+          this._loadInReplyTo($container, $inReplyToLink);
         }
         return true;
       }
     },
 
-    _loadInReplyTo: function($container, $in_reply_to_link) {
+    _loadInReplyTo: function($container, $inReplyToLink) {
 
-      if (this._flashExistingInReplyTo($in_reply_to_link)) { return; }
-      if (this._loadInReplyToFromTimeline($container, $in_reply_to_link)) { return; }
+      if (this._flashExistingInReplyTo($inReplyToLink)) { return; }
+      if (this._loadInReplyToFromTimeline($container, $inReplyToLink)) { return; }
 
       $.ajax({
         type: 'GET',
-        url: $in_reply_to_link.attr('href'),
+        url: $inReplyToLink.attr('href'),
         data: {}, // Google Chrome will post an 'undefined' without this
         dataType: 'json',
         success: $.proxy(function(data, textStatus) {
@@ -353,9 +353,9 @@
             var $tweet = $(data.html).removeClass('buffered');
             $container.find('.conversations').append($tweet);
 
-            $in_reply_to_link = $tweet.find('.in-reply-to');
-            if ($in_reply_to_link.length) {
-              this._loadInReplyTo($container, $in_reply_to_link);
+            $inReplyToLink = $tweet.find('.in-reply-to');
+            if ($inReplyToLink.length) {
+              this._loadInReplyTo($container, $inReplyToLink);
             }
           }
         }, this)
@@ -364,8 +364,8 @@
 
     _loadConversation: function(event) {
 
-      var $in_reply_to_link = $(event.currentTarget);
-      var $container = $in_reply_to_link.parents('.status:first');
+      var $inReplyToLink = $(event.currentTarget);
+      var $container = $inReplyToLink.parents('.status:first');
       var $conversations = $container.find('.conversations');
 
       if ($conversations.length) {
@@ -376,7 +376,7 @@
         );
       }
 
-      this._loadInReplyTo($container, $in_reply_to_link);
+      this._loadInReplyTo($container, $inReplyToLink);
 
       return false;
     },
@@ -390,12 +390,12 @@
         }
         this.$timeline.prepend(data.html);
 
-        var total_count = parseInt(this.$notifyBar.attr('data-count'), 10) +
+        var totalCount = parseInt(this.$notifyBar.attr('data-count'), 10) +
           data.count;
 
-        this.$notifyBar.attr('data-count', total_count);
+        this.$notifyBar.attr('data-count', totalCount);
         this.$statusesUpdate
-          .text(total_count + ' new tweets.')
+          .text(totalCount + ' new tweets.')
           .show();
       }
 
