@@ -149,7 +149,7 @@
       } else {
 
         this._addNewTweets.apply(this, arguments);
-        this.$statusBox.val('');
+        this.$statusBox.val('').keyup();
       }
     },
 
