@@ -6,14 +6,14 @@
           = image_tag(current_user.profile_image_url, :alt => current_user.name, :size => '48x48')
           %span= current_user.screen_name
           %span
-            %span= "#{current_user.statuses_count} tweets"
+            %span= "#{number_with_delimiter(current_user.statuses_count)} tweets"
         = link_to yield(:user_icon), user_path(current_user.screen_name), :title => current_user.name
       %ul.stats
         - content_for :following do
-          %span= current_user.friends_count
+          %span= number_with_delimiter(current_user.friends_count)
           %span following
         - content_for :followers do
-          %span= current_user.followers_count
+          %span= number_with_delimiter(current_user.followers_count)
           %span followers
         %li= link_to yield(:following), following_path
         %li= link_to yield(:followers), followers_path

@@ -30,10 +30,10 @@
 
     %ul.stats
       - content_for :following do
-        %span= @user.friends_count
+        %span= number_with_delimiter(@user.friends_count)
         %span following
       - content_for :followers do
-        %span= @user.followers_count
+        %span= number_with_delimiter(@user.followers_count)
         %span followers
       %li= link_to yield(:following), user_following_path
       %li= link_to yield(:followers), user_followers_path
