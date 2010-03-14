@@ -68,8 +68,9 @@
         %li
           %span
             = link_to 'Retweet with comment', root_path(:retweet_id => status.id), :title => 'Retweet with comment (Traditional RT)', :class => 'retweet-with-comment'
-        %li
-          %span
-            = link_to 'Retweet', '#', :title => 'Retweet (Official RT)', |
-              'data-url' => retweet_status_path(status.id), |
-              :class => 'retweet' |
+        - unless status.user.screen_name == current_user.screen_name
+          %li
+            %span
+              = link_to 'Retweet', '#', :title => 'Retweet (Official RT)', |
+                'data-url' => retweet_status_path(status.id), |
+                :class => 'retweet' |
