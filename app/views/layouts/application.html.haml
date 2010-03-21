@@ -14,8 +14,8 @@
           body, h3, h4
             :color ##{profile_user.profile_text_color}
           body
-            :background #{profile_background(profile_user)}
-          a, a span, a:visited
+            :background #{profile_background(profile_user)} !important
+          a, a span, a:visited, a:hover
             :color ##{profile_user.profile_link_color}
           #sidebar > *
             :background ##{profile_user.profile_sidebar_fill_color} !important
