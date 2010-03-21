@@ -41,7 +41,7 @@ module ApplicationHelper
 
   private
   def auto_link_urls(tweet)
-    tweet.gsub %r{[0-9A-Za-z]{2,4}://([0-9A-Za-z_-]+\.)+[0-9A-Za-z]*[0-9A-Za-z/+=%&_.~?:\[\]-]*} do |url|
+    tweet.gsub %r{[0-9A-Za-z]{2,5}://([0-9A-Za-z_-]+\.)+[0-9A-Za-z]*[0-9A-Za-z/+=%&_.~?:\[\]-]*} do |url|
       short_url = truncate(url)
       link_to short_url, url, :target => '_blank', :title => url, 'data-truncated' => (url != short_url)
     end
