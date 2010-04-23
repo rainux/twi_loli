@@ -199,7 +199,7 @@
 
       if (this.$statusBox.length) {
 
-        var $tweet = $(event.currentTarget).parents('.status');
+        var $tweet = $(event.currentTarget).parents('.status:first');
 
         $('#status_update_box').removeClass('hide');
         $('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
@@ -216,7 +216,7 @@
 
       if (this.$statusBox.length) {
 
-        var $tweet = $(event.currentTarget).parents('.status');
+        var $tweet = $(event.currentTarget).parents('.status:first');
         var mentionedUsers = $tweet.attr('data-mentioned-users').split(' ');
 
         mentionedUsers.unshift($tweet.attr('data-user'));
@@ -239,8 +239,8 @@
 
       if (this.$statusBox.length) {
 
-        var $tweet = $(event.currentTarget).parents('.status');
-        var $content = $tweet.find('.content').clone();
+        var $tweet = $(event.currentTarget).parents('.status:first');
+        var $content = $tweet.find('.content:first').clone();
 
         $content.find('a[data-truncated=true]').each(function(i, link) {
 
