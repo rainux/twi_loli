@@ -22,6 +22,7 @@ class SessionsController < ApplicationController
     end
 
     session[:user] = Twitter.account.verify_credentials?
+    session[:user].delete 'status'
     session[:auth] = Twitter.auth
     redirect_back_or_default root_path
 
