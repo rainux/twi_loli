@@ -1,5 +1,5 @@
 class StatusesController < ApplicationController
-  before_filter :require_user, :except => [:public_timeline, :user_timeline]
+  before_filter :require_user, :except => [:public_timeline, :user_timeline, :show]
   before_filter :prepare_options, :except => [:following, :followers, :create, :show]
   respond_to :html, :json, :xml
 
