@@ -203,7 +203,15 @@
 
         $('#status_update_box').removeClass('hide');
         $('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
-        this.$statusBox.val('@' + $tweet.attr('data-user') + ' ')
+
+        var status;
+        if (event.ctrlKey) {
+          status = '@' + $tweet.attr('data-user') + ' '
+        } else {
+          status = '@' + $tweet.attr('data-user') + ' ' + this.$statusBox.val();
+        }
+
+        this.$statusBox.val(status)
           .focus()
           .keyup()[0]
           .setSelectionRange(256, 256);
@@ -225,8 +233,17 @@
         });
 
         $('#status_update_box').removeClass('hide');
+
         $('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
-        this.$statusBox.val(mentionedUsers.join(' ') + ' ')
+
+        var status;
+        if (event.ctrlKey) {
+          status = mentionedUsers.join(' ') + ' ';
+        } else {
+          status = mentionedUsers.join(' ') + ' ' + this.$statusBox.val();
+        }
+
+        this.$statusBox.val(status)
           .focus()
           .keyup()[0]
           .setSelectionRange(256, 256);
