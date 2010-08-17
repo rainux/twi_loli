@@ -26,20 +26,20 @@ form.bp
   +blueprint-form
 
 a
-  :text-decoration none
+  text-decoration: none
   &:hover
-    :text-decoration underline
+    text-decoration: underline
 
 input
   &[type=password]
-    :margin 0.5em 0
-    :background-color #fff
-    :padding 5px
+    margin: 0.5em 0
+    background-color: #fff
+    padding: 5px
 
 // Page layout can be done using mixins applied to your semantic classes and IDs:
 body.three-col
-  :background #f8f8f8
-  :font-size 90%
+  background: #f8f8f8
+  font-size: 90%
   #container
     +container
   #header, #footer
@@ -48,171 +48,171 @@ body.three-col
     // One third of the grid columns, rounding down. With 24 cols, this is 8.
     !sidebar_columns = floor(7 * !blueprint_grid_columns / 24)
     +column(!sidebar_columns)
-    :background #fcfcfc
+    background: #fcfcfc
     ul
-      :margin 0
+      margin: 0
       li
         +clearfix
     .profile
-      :padding 20px
+      padding: 20px
       .section-links
-        :float right
+        float: right
       .label
-        :font-weight bold
+        font-weight: bold
     #primary_nav
-      :padding 0 20px 20px
+      padding: 0 20px 20px
     #lists
-      :padding 0 20px 20px
+      padding: 0 20px 20px
       h4
-        :margin-bottom 0.2em
+        margin-bottom: 0.2em
     #utilities
-      :padding 0 20px 20px
+      padding: 0 20px 20px
       h4
-        :margin-bottom 0.2em
+        margin-bottom: 0.2em
   #content
     // Two thirds of the grid columns, rounding up.
     // With 24 cols, this is 16.
     !content_columns = ceil(17 * !blueprint_grid_columns / 24)
     // true means it's the last column in the row
     +column(!content_columns, true)
-    :background #fff
+    background: #fff
     #message
-      :position fixed
-      :z-index 999
-      :width = !blueprint_container_size - 10px
-      :top 50px
+      position: fixed
+      z-index: 999
+      width = !blueprint_container_size - 10px
+      top: 50px
     p.error, p.notice
-      :margin-bottom 0
+      margin-bottom: 0
     #status_update_box
-      :padding 10px 20px 20px
+      padding: 10px 20px 20px
       .bar
-        :position relative
-        :line-height 2em
+        position: relative
+        line-height: 2em
         h3
-          :margin 5px 0
+          margin: 5px 0
         #chars_left_notice
-          :position absolute
-          :top 0
-          :right 0
-          :font-size 2em
-          :font-weight bold
-          :color #ccc
+          position: absolute
+          top: 0
+          right: 0
+          font-size: 2em
+          font-weight: bold
+          color: #ccc
       .info
         +clearfix
         textarea#status_status
-          :height auto
-          :width 98%
-          :resize none
+          height: auto
+          width: 98%
+          resize: none
         .status-btn
-          :float right
+          float: right
           input#status_submit
-            :padding 6px 10px
-            :width 125px
-            :color #666
+            padding: 6px 10px
+            width: 125px
+            color: #666
     .profile
-      :padding 20px
+      padding: 20px
       h2
-        :font-size 2.8em
-        :font-weight bold
+        font-size: 2.8em
+        font-weight: bold
         img
-          :float left
-          :margin-right 10px
+          float: left
+          margin-right: 10px
     .section
-      :padding 0 20px 20px
+      padding: 0 20px 20px
       #timeline_heading
         h1
-          :font-size 1.5em
+          font-size: 1.5em
       #new_statuses_notification
         #statuses_update
-          :background-color #ffc
-          :border-width 1px 0
-          :border-color #eeb
-          :border-style solid none
-          :padding .5em 1em
-          :color #333
-          :margin 1em 0
-          :display block
+          background-color: #ffc
+          border-width: 1px 0
+          border-color: #eeb
+          border-style: solid none
+          padding: .5em 1em
+          color: #333
+          margin: 1em 0
+          display: block
           &:hover
-            :background-color #ffa
-            :border-color #dd9
-            :cursor pointer
-            :text-decoration none
-            :color #000
+            background-color: #ffa
+            border-color: #dd9
+            cursor: pointer
+            text-decoration: none
+            color: #000
       ol#timeline
-        :margin 0
+        margin: 0
         li.status
           +clearfix
-          :border-bottom 1px solid #eee
-          :padding 10px 0 8px
+          border-bottom: 1px solid #eee
+          padding: 10px 0 8px
           &:first-child
-            :border-top 1px solid #eee
+            border-top: 1px solid #eee
           &:hover
-            :background #f7f7f7
+            background: #f7f7f7
             > span.status-body ul.actions-hover
-              :visibility visible
+              visibility: visible
           &.buffered
-            :display none
+            display: none
           span.thumb
-            :display block
-            :position absolute
+            display: block
+            position: absolute
           span.status-body
-            :display block
-            :margin-left 56px
-            :min-height 48px
+            display: block
+            margin-left: 56px
+            min-height: 48px
             .retweet-icon
-              :position relative
-              :display inline-block
-              :width 18px
-              :height 14px
-              :top 2px
-              :background-repeat no-repeat
-              :background-image url("/images/sprite-icons.png")
-              :background-position -128px -64px
+              position: relative
+              display: inline-block
+              width: 18px
+              height: 14px
+              top: 2px
+              background-repeat: no-repeat
+              background-image: url("/images/sprite-icons.png")
+              background-position: -128px -64px
             .lock-icon
-              :background transparent url(/images/lock_icon_small.png) no-repeat scroll 0 50%
-              :display inline-block
-              :height 10px
-              :width 8px
+              background: transparent url(/images/lock_icon_small.png) no-repeat scroll 0 50%
+              display: inline-block
+              height: 10px
+              width: 8px
           span.meta
-            :display block
-            :color #999
+            display: block
+            color: #999
             a
-              :color #999
+              color: #999
           ul.actions-hover
-            :float right
-            :visibility hidden
+            float: right
+            visibility: hidden
             li
-              :display inline-block
+              display: inline-block
         ol.conversations
-          :margin 20px 0 0 20px
+          margin: 20px 0 0 20px
           li.status
-            :width 100%
+            width: 100%
             &:last-child
-              :padding-bottom 0
-              :border none
+              padding-bottom: 0
+              border: none
             &:hover
-              :background #f7f7f7
+              background: #f7f7f7
               > span.status-body ul.actions-hover
-                :visibility visible
+                visibility: visible
       .pagination
-        :padding-top 20px
-        :text-align right
+        padding-top: 20px
+        text-align: right
         a
-          :background #eee
-          :border 1px solid #ccc
-          :padding 8px 10px
+          background: #eee
+          border: 1px solid #ccc
+          padding: 8px 10px
     .sign-in
-      :padding 20px
+      padding: 20px
 
 body#profile
   #content
     .section
       ol#timeline
         > li.status
-          :padding-left 8px
+          padding-left: 8px
           > span.thumb
-            :display none
+            display: none
           > span.status-body
-            :margin-left 0
+            margin-left: 0
             > .author-name
-              :display none
+              display: none
