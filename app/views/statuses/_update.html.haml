@@ -1,7 +1,7 @@
 - hide = false unless defined?(hide)
 
 #status_update_box{:class => hide ? 'hide' : nil}
-  - form_for :status, :url => statuses_path do |f|
+  = form_for :status, :url => statuses_path do |f|
     .bar
       %h3
         = f.label :status, "What's happening?", :class => 'doing'
