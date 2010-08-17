@@ -1,4 +1,4 @@
-TwiLoli::Application.routes.draw do |map|
+TwiLoli::Application.routes.draw do
   resources :statuses do
     collection do
       get   :public_timeline
