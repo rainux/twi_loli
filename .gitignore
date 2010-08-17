@@ -5,4 +5,4 @@ tmp/**/*
 tmp/tags
 config/config.yml
 app/stylesheets/.sass-cache/
-public/stylesheets/compiled/*.css
+public/stylesheets/*.css

@@ -1,19 +1,22 @@
 // This import applies a global reset to any page that imports this stylesheet.
-@import blueprint/reset.sass
+@import blueprint/reset
 // To configure blueprint, edit the partials/base.sass file.
-@import partials/base.sass
+@import partials/base
 // Import all the default blueprint modules so that we can access their mixins.
 @import blueprint
 // Import the non-default scaffolding module.
-@import blueprint/modules/scaffolding.sass
+@import blueprint/scaffolding
 
-// To generate css equivalent to the blueprint css but with your configuration applied, uncomment:
-+blueprint
+// To generate css equivalent to the blueprint css but with your
+// configuration applied, uncomment:
+@include blueprint
 
-//Recommended Blueprint configuration with scoping and semantic layout:
-+blueprint-typography("body.bp")
+// But Compass recommends that you scope your blueprint styles
+// So that you can better control what pages use blueprint
+// when stylesheets are concatenated together.
 +blueprint-scaffolding("body.bp")
 body.bp
+  +blueprint-typography(true)
   +blueprint-utilities
   +blueprint-debug
   +blueprint-interaction
