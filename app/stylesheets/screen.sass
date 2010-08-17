@@ -36,6 +36,9 @@ input
     background-color: #fff
     padding: 5px
 
+ol, ul
+  padding: 0
+
 // Page layout can be done using mixins applied to your semantic classes and IDs:
 body.three-col
   background: #f8f8f8
@@ -209,10 +212,9 @@ body#profile
     .section
       ol#timeline
         > li.status
-          padding-left: 8px
           > span.thumb
             display: none
           > span.status-body
-            margin-left: 0
+            margin-left: 10px
             > .author-name
               display: none
