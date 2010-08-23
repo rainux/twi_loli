@@ -50,7 +50,7 @@ module ApplicationHelper
   def auto_link_usernames(tweet)
     tweet.gsub %r{@[0-9A-Za-z_/]+} do |user|
       user = user[1..-1]
-      '@' + link_to(user, user_path(user))
+      '@' + link_to(user, "/#{user}")
     end
   end
 
