@@ -6,7 +6,7 @@
 
   %h2 - with your Twitter account
 
-  - form_for :session, :url => session_path do |f|
+  = form_for :session, :url => session_path do |f|
     .username
       = f.label :username
       = f.text_field :username
