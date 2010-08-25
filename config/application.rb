@@ -11,8 +11,6 @@ require 'active_resource/railtie'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
-require 'lib/twi_loli/logger'
-
 module TwiLoli
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -51,6 +49,7 @@ module TwiLoli
       :consumer_secret => '',
       :site => 'https://twitter.com'
 
+    require 'twi_loli/logger'
     config.middleware.use TwiLoli::Logger
   end
 end
