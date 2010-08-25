@@ -68,8 +68,11 @@ class ApplicationController < ActionController::Base
 
   def respond_timeline(statuses, newly_created = false)
     if request.xhr?
-      html = render_to_string :partial => 'status.html.haml', :collection => statuses,
+      html = render_to_string(
+        :partial => 'statuses/status.html.haml',
+        :collection => statuses,
         :locals => {:newly_created => newly_created}
+      )
       data = {
         :html => html,
         :count => statuses.size
