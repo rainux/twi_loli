@@ -481,9 +481,12 @@
       this._init();
       this.bindEventHandlers();
 
-      this._refreshTimelineIntervalId = setInterval(
-        $.proxy(this, '_refreshTimeline'), 2000 * 60
-      );
+      if (location.search.toLowerCase().indexOf('page') < 0 ) {
+        this._refreshTimelineIntervalId = setInterval(
+          $.proxy(this, '_refreshTimeline'), 2000 * 60
+        );
+      }
+
       this._updateRelativeTimeIntervalId = setInterval(
         $.proxy(this, '_updateRelativeTime'), 1000 * 10
       );
