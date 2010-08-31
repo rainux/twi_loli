@@ -391,13 +391,16 @@
     _loadConversation: function(event) {
 
       var $inReplyToLink = $(event.currentTarget);
-      var $container = $inReplyToLink.parents('.status:first');
+      var $container = $inReplyToLink.parents('.status:last');
       var $conversations = $container.find('.conversations');
+      var isRootNode = $inReplyToLink.parents('.status').length == 1;
       var isFull = event.ctrlKey;
 
-      if ($conversations.length) {
+      if (isRootNode) {
         $conversations.toggle();
-      } else {
+      }
+
+      if (!$conversations.length) {
         $container.append(
           $('<ol />').attr('class', 'conversations')
         );
