@@ -1,5 +1,5 @@
 GEM
-  remote: http://gemcutter.org/
+  remote: http://rubygems.org/
   specs:
     abstract (1.0.0)
     actionmailer (3.0.0.rc)
@@ -31,7 +31,7 @@ GEM
     arel (0.4.0)
       activesupport (>= 3.0.0.beta)
     builder (2.1.2)
-    compass (0.10.4)
+    compass (0.10.5)
       haml (>= 3.0.4)
     erubis (2.6.6)
       abstract (>= 1.0.0)
@@ -39,8 +39,8 @@ GEM
       json
       mime-types
       oauth
-    haml (3.0.17)
-    hashie (0.3.0)
+    haml (3.0.18)
+    hashie (0.4.0)
     i18n (0.4.1)
     json (1.4.6)
     mail (2.2.5)
@@ -51,7 +51,7 @@ GEM
     oauth (0.4.2)
     polyglot (0.3.1)
     rack (1.2.1)
-    rack-mount (0.6.9)
+    rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-oauth (0.1.5)
       oauth
@@ -75,7 +75,7 @@ GEM
     thor (0.14.0)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
-    tzinfo (0.3.22)
+    tzinfo (0.3.23)
 
 PLATFORMS
   ruby
