@@ -92,9 +92,9 @@ class StatusesController < ApplicationController
   end
 
   def show
-    @status = Twitter.statuses.show? :id => params[:id]
+    @single_status = Twitter.statuses.show? :id => params[:id]
 
-    respond_timeline([@status])
+    respond_timeline([@single_status])
   end
 
   def retweet
