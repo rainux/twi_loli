@@ -1,4 +1,4 @@
 :twitter:
-  :api: 'api.twitter.com/v1'
+  :basic_auth_api: 'twi-miku.appspot.com'
   :consumer_key:
   :consumer_secret:

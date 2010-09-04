@@ -59,6 +59,7 @@ class SessionsController < ApplicationController
 
   private
   def store_credentials
+    Twitter.api = Grackle::Client::TWITTER_API_HOSTS_MAPPING[Twitter.auth[:type]]
     session[:user] = Twitter.account.verify_credentials?
     session[:user].delete 'status'
     session[:auth] = Twitter.auth

@@ -35,6 +35,7 @@ class ApplicationController < ActionController::Base
   def set_twitter_auth
     if logged_in?
       Twitter.auth = session[:auth]
+      Twitter.api = Grackle::Client::TWITTER_API_HOSTS_MAPPING[Twitter.auth[:type]]
       Time.zone = session[:user].time_zone
     else
       Twitter.auth = {}

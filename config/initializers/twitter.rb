@@ -1,4 +1,5 @@
-Grackle::Client::TWITTER_API_HOSTS[:rest] = AppConfig.twitter.api
+Grackle::Client::TWITTER_API_HOSTS[:basic_auth] = AppConfig.twitter.basic_auth_api
+Grackle::Client::TWITTER_API_HOSTS_MAPPING = {:basic => :basic_auth, :oauth => :v1}
 
 module Grackle
   module Handlers
