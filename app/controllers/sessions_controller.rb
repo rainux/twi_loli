@@ -20,7 +20,16 @@ class SessionsController < ApplicationController
         :password => params[:session][:password]
       }
     end
+    store_credentials
+  end
 
+  def destroy
+    session.clear
+    redirect_to root_path
+  end
+
+  private
+  def store_credentials
     session[:user] = Twitter.account.verify_credentials?
     session[:user].delete 'status'
     session[:auth] = Twitter.auth
@@ -28,11 +37,7 @@ class SessionsController < ApplicationController
 
   rescue Grackle::TwitterError => error
     flash[:error] = JSON.parse(error.response_body)['error']
+    logger.info error.backtrace.join("\n")
     redirect_to new_session_path
-  end
-
-  def destroy
-    session.clear
-    redirect_to root_path
   end
 end
