@@ -1,26 +1,55 @@
 class SessionsController < ApplicationController
+  before_filter :create_oauth_client, :only => [:oauth_login, :oauth_complete]
+
   def new
-    oauth_instance.consumer_key = AppConfig.twitter.consumer_key
-    oauth_instance.consumer_secret = AppConfig.twitter.consumer_secret
   end
 
   def create
-    if get_access_token
-      Twitter.auth = {
-        :type => :oauth,
-        :consumer_key => AppConfig.twitter.consumer_key,
-        :consumer_secret => AppConfig.twitter.consumer_secret,
-        :token => get_access_token.token,
-        :token_secret => get_access_token.secret
-      }
-    else
-      Twitter.auth = {
-        :type => :basic,
-        :username => params[:session][:username],
-        :password => params[:session][:password]
-      }
-    end
+    Twitter.auth = {
+      :type => :basic,
+      :username => params[:session][:username],
+      :password => params[:session][:password]
+    }
     store_credentials
+  end
+
+  def oauth_login
+    request_token = @oauth_client.request_token(
+      :oauth_callback => oauth_complete_url
+    )
+    session[:request_token] = request_token.token
+    session[:request_token_secret] = request_token.secret
+    redirect_to request_token.authorize_url
+
+  rescue OAuth::Error => error
+    flash[:error] = error.message
+    logger.info error.backtrace.join("\n")
+    redirect_to new_session_path
+  end
+
+  def oauth_complete
+    access_token = @oauth_client.authorize(
+      session[:request_token],
+      session[:request_token_secret],
+      :oauth_verifier => params[:oauth_verifier]
+    )
+    Twitter.auth = {
+      :type => :oauth,
+      :consumer_key => AppConfig.twitter.consumer_key,
+      :consumer_secret => AppConfig.twitter.consumer_secret,
+      :token => access_token.token,
+      :token_secret => access_token.secret
+    }
+    store_credentials
+
+  rescue OAuth::Unauthorized => error
+    flash[:error] = error.message
+    logger.info error.backtrace.join("\n")
+    redirect_to new_session_path
+
+  ensure
+    session[:request_token] = nil
+    session[:request_token_secret] = nil
   end
 
   def destroy
@@ -39,5 +68,12 @@ class SessionsController < ApplicationController
     flash[:error] = JSON.parse(error.response_body)['error']
     logger.info error.backtrace.join("\n")
     redirect_to new_session_path
+  end
+
+  def create_oauth_client
+    @oauth_client = TwitterOAuth::Client.new(
+      :consumer_key => AppConfig.twitter.consumer_key,
+      :consumer_secret => AppConfig.twitter.consumer_secret
+    )
   end
 end

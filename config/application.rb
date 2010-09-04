@@ -44,11 +44,6 @@ module TwiLoli
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
-    config.middleware.use Rack::OAuth,
-      :consumer_key => '',
-      :consumer_secret => '',
-      :site => 'https://twitter.com'
-
     require 'twi_loli/logger'
     config.middleware.use TwiLoli::Logger
   end

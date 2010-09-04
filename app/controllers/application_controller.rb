@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  include Rack::OAuth::Methods
-
   helper_method :current_user, :logged_in?, :oauth_login_path
   protect_from_forgery
   before_filter :set_twitter_auth
