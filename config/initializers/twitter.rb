@@ -1,4 +1,4 @@
-Grackle::Client::TWITTER_API_HOSTS[:rest] = AppConfig[:twitter][:api]
+Grackle::Client::TWITTER_API_HOSTS[:rest] = AppConfig.twitter.api
 
 module Grackle
   module Handlers
@@ -19,5 +19,5 @@ end
 
 Twitter = Grackle::Client.new(
   :handlers => {:json => Grackle::Handlers::JSON2MashHandler.new },
-  :headers => AppConfig[:twitter][:headers]
+  :headers => AppConfig.twitter.headers
 )

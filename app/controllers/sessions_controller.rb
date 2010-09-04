@@ -1,15 +1,15 @@
 class SessionsController < ApplicationController
   def new
-    oauth_instance.consumer_key = AppConfig[:twitter][:consumer_key]
-    oauth_instance.consumer_secret = AppConfig[:twitter][:consumer_secret]
+    oauth_instance.consumer_key = AppConfig.twitter.consumer_key
+    oauth_instance.consumer_secret = AppConfig.twitter.consumer_secret
   end
 
   def create
     if get_access_token
       Twitter.auth = {
         :type => :oauth,
-        :consumer_key => AppConfig[:twitter][:consumer_key],
-        :consumer_secret => AppConfig[:twitter][:consumer_secret],
+        :consumer_key => AppConfig.twitter.consumer_key,
+        :consumer_secret => AppConfig.twitter.consumer_secret,
         :token => get_access_token.token,
         :token_secret => get_access_token.secret
       }

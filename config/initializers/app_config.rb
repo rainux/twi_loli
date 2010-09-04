@@ -1,8 +1,8 @@
-AppConfig = {
+AppConfig = Hashie::Mash.new(
   :twitter => {
     :api => 'api.twitter.com/v1'
   }
-}
+)
 
 config_file = Rails.root.join('config', 'config.yml')
 
