@@ -1,5 +1,4 @@
 :twitter:
   :api: 'api.twitter.com/v1'
-  :headers:
   :consumer_key:
   :consumer_secret:

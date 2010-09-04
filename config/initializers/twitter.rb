@@ -18,6 +18,5 @@ module Grackle
 end
 
 Twitter = Grackle::Client.new(
-  :handlers => {:json => Grackle::Handlers::JSON2MashHandler.new },
-  :headers => AppConfig.twitter.headers
+  :handlers => {:json => Grackle::Handlers::JSON2MashHandler.new }
 )
