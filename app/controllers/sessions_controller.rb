@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
     redirect_to request_token.authorize_url
 
   rescue OAuth::Error => error
-    flash[:error] = error.message
+    flash[:error] = extract_error_message(error)
     logger.info error.backtrace.join("\n")
     redirect_to new_session_path
   end
@@ -43,7 +43,7 @@ class SessionsController < ApplicationController
     store_credentials
 
   rescue OAuth::Unauthorized => error
-    flash[:error] = error.message
+    flash[:error] = extract_error_message(error)
     logger.info error.backtrace.join("\n")
     redirect_to new_session_path
 
@@ -66,7 +66,7 @@ class SessionsController < ApplicationController
     redirect_back_or_default root_path
 
   rescue Grackle::TwitterError => error
-    flash[:error] = JSON.parse(error.response_body)['error']
+    flash[:error] = extract_error_message(error)
     logger.info error.backtrace.join("\n")
     redirect_to new_session_path
   end

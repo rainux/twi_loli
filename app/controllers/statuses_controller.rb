@@ -24,6 +24,7 @@ class StatusesController < ApplicationController
     @statuses = Twitter.statuses.user_timeline? @options
 
   rescue Grackle::TwitterError => error
+    flash[:error] = extract_error_message(error)
     @statuses = []
 
   ensure
@@ -73,10 +74,7 @@ class StatusesController < ApplicationController
     @status = Twitter.statuses.update! params[:status].merge(:source => 'TwiLoli')
 
   rescue Grackle::TwitterError => error
-    error_message = JSON.parse(error.response_body)['error']
-
-  rescue => error
-    error_message = error.message
+    error_message = extract_error_message(error)
 
   ensure
     if request.xhr?
@@ -101,7 +99,7 @@ class StatusesController < ApplicationController
     @status = Twitter.statuses.retweet! :id => params[:id]
 
   rescue Grackle::TwitterError => error
-    error_message = JSON.parse(error.response_body)['error']
+    error_message = extract_error_message(error)
 
   ensure
     if request.xhr?
