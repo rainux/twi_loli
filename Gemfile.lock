@@ -77,6 +77,7 @@ GEM
       mime-types (>= 1.16)
       oauth (>= 0.4.1)
     tzinfo (0.3.23)
+    yajl-ruby (0.7.7)
 
 PLATFORMS
   ruby
@@ -87,3 +88,4 @@ DEPENDENCIES
   hashie
   rails (~> 3.0.0)
   twitter_oauth
+  yajl-ruby
