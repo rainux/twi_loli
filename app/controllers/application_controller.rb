@@ -94,7 +94,11 @@ class ApplicationController < ActionController::Base
     if error.respond_to? :response_body
       response_body = Hashie::Mash.new(JSON.parse(error.response_body))
       if response_body.errors
-        message = response_body.errors.collect(&:message).join("\n")
+        if response_body.errors.first.respond_to? :message
+          message = response_body.errors.collect(&:message).join("\n")
+        else
+          message = response_body.errors
+        end
       elsif response_body.error
         message = response_body.error
       end
