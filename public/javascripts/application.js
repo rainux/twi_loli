@@ -159,13 +159,20 @@
 
     _submitStatus: function() {
 
+      this.$statusSubmit.css('visibility', 'hidden').parent().addClass('big-spinner');
+
       var $form = $('#status_update_box form');
 
-      $.post(
-        $form.attr('action'),
-        $form.serialize(),
-        $.proxy(this, '_statusSubmitted')
-      );
+      $.ajax({
+        type: 'POST',
+        url: $form.attr('action'),
+        data: $form.serialize(),
+        success: $.proxy(this, '_statusSubmitted'),
+        complete: $.proxy(function() {
+
+          this.$statusSubmit.css('visibility', 'visible').parent().removeClass('big-spinner');
+        }, this)
+      });
 
       return false;
     },
@@ -285,6 +292,7 @@
 
       var $retweetLink = $(event.currentTarget);
       var tweetId = $retweetLink.parents('.status:first').attr('data-id');
+      $retweetLink.css('visibility', 'hidden').parent().addClass('small-spinner');
 
       $.ajax({
         type: 'PUT',
@@ -306,6 +314,10 @@
             $('#status_' + tweetId).replaceWith($retweet);
             $('#' + $retweet.attr('id')).removeClass('buffered');
           }
+        }, this),
+
+        complete: $.proxy(function() {
+          $retweetLink.css('visibility', 'visible').parent().removeClass('small-spinner');
         }, this)
       });
 
@@ -367,6 +379,8 @@
 
       if (this._loadInReplyToFromTimeline( $container, $inReplyToLink, isFull)) { return; }
 
+      $inReplyToLink.css('visibility', 'hidden').parent().addClass('small-spinner');
+
       $.ajax({
         type: 'GET',
         url: $inReplyToLink.attr('href'),
@@ -388,6 +402,10 @@
 
             this._loadNextInReplyTo($container, $inReplyToLink, $tweet, isFull);
           }
+        }, this),
+
+        complete: $.proxy(function() {
+          $inReplyToLink.css('visibility', 'visible').parent().removeClass('small-spinner');
         }, this)
       });
     },
