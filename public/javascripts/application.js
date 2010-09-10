@@ -148,7 +148,7 @@
           .fadeOut('slow');
       } else {
 
-        this._addNewTweets.apply(this, arguments);
+        this._prependNewTweets.apply(this, arguments);
         this.$statusBox.val('').keyup();
       }
     },
@@ -411,7 +411,7 @@
       return false;
     },
 
-    _addNewTweets: function(data, textStatus) {
+    _prependNewTweets: function(data, textStatus) {
 
       if (data && data.count) {
 
@@ -442,7 +442,7 @@
         type: 'GET',
         data: {since_id: this.$timeline.attr('data-max-id')},
         dataType: 'json',
-        success: $.proxy(this, '_addNewTweets')
+        success: $.proxy(this, '_prependNewTweets')
       });
     },
 
