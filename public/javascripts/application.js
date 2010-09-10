@@ -61,8 +61,6 @@
 
       this.$statusBox = $('#status_status');
       this.$statusSubmit = $('#status_submit');
-      this.$notifyBar = $('#new_statuses_notification');
-      this.$statusesUpdate = $('#statuses_update');
       this.$timeline = $('#timeline');
       this.$loadMore = $('#pagination .load-more');
       this.$window = $(window);
@@ -173,35 +171,6 @@
           this.$statusSubmit.css('visibility', 'visible').parent().removeClass('big-spinner');
         }, this)
       });
-
-      return false;
-    },
-
-    _showNewStatuses: function(event) {
-
-      var $buffered = this.$timeline.find('> li.status.buffered:not(.newly_created)');
-
-      if ($buffered.length) {
-
-        this.$timeline
-          .find('> li.status.newly_created')
-          .remove();
-      }
-
-      $buffered = this.$timeline
-        .find('> li.status.buffered')
-        .removeClass('buffered');
-
-      var height = _.reduce($buffered, 0, function(memo, li) {
-        return memo + $(li).outerHeight();
-      });
-
-      window.scrollBy(0, height);
-
-      this.$notifyBar.attr('data-count', 0);
-      $(event.currentTarget)
-        .text('0 new tweet.')
-        .hide();
 
       return false;
     },
@@ -442,13 +411,20 @@
         }
         this.$timeline.prepend(data.html);
 
-        var totalCount = parseInt(this.$notifyBar.attr('data-count'), 10) +
-          data.count;
+        var $newlyCreated = this.$timeline.find('> li.status.newly_created');
+        var removeHeight = _.reduce($newlyCreated, 0, function(memo, li) {
+          return memo + $(li).outerHeight();
+        });
+        $newlyCreated.remove();
 
-        this.$notifyBar.attr('data-count', totalCount);
-        this.$statusesUpdate
-          .text(totalCount + ' new tweets.')
-          .show();
+        var $buffered = this.$timeline
+          .find('> li.status.buffered.top');
+
+        var height = _.reduce($buffered, 0, function(memo, li) {
+          return memo + $(li).outerHeight();
+        });
+
+        window.scrollBy(0, height - removeHeight);
       }
     },
 
@@ -533,7 +509,6 @@
         .keyup($.proxy(this, '_updateStatusBoxHint'));
 
       this.$statusSubmit.click($.proxy(this, '_submitStatus'));
-      this.$statusesUpdate.click($.proxy(this, '_showNewStatuses'));
 
       this.$timeline
         .delegate('a.reply', 'click', $.proxy(this, '_reply'))
