@@ -200,6 +200,12 @@ body.three-col
       #pagination
         padding-top: 20px
         +clearfix
+        .more
+          float: left
+          width: 400px
+          text-align: center
+          .spinner
+            display: none
         a
           background: #eee
           border: 1px solid #ccc
@@ -207,6 +213,9 @@ body.three-col
           float: right
           text-align: center
           margin-left: 10px
+          &.load-more
+            margin: 0
+            width: 378px
 
     .sign-in
       padding: 20px

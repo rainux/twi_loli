@@ -4,7 +4,7 @@
   #new_statuses_notification{'data-count' => 0}
     = link_to '0 new tweet.', '', :id => 'statuses_update', :style => 'display: none'
 
-  %ol#timeline{'data-max-id' => @statuses.empty? ? 0 : @statuses.first.id}
+  %ol#timeline{ 'data-max-id' => (@statuses.empty? ? 0 : @statuses.first.id), 'data-min-id' => (@statuses.empty? ? 0 : @statuses.last.id) }
     = render :partial => 'statuses/status', :collection => @statuses
 
   = yield :pagination

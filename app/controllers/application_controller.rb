@@ -67,6 +67,9 @@ class ApplicationController < ActionController::Base
 
   def respond_timeline(statuses, newly_created = false)
     if request.xhr?
+      if params[:max_id] && statuses.first.id == params[:max_id].to_i
+        statuses.shift
+      end
       html = render_to_string(
         :partial => 'statuses/status.html.haml',
         :collection => statuses,
@@ -78,6 +81,7 @@ class ApplicationController < ActionController::Base
       }
       unless newly_created
         data[:max_id] = statuses.empty? ? params[:since_id] : statuses.first.id
+        data[:min_id] = statuses.empty? ? params[:max_id] : statuses.last.id
       end
 
       render :json => data

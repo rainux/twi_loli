@@ -63,6 +63,7 @@
       this.$notifyBar = $('#new_statuses_notification');
       this.$statusesUpdate = $('#statuses_update');
       this.$timeline = $('#timeline');
+      this.$more = $('#pagination .more');
 
       return this;
     },
@@ -446,6 +447,35 @@
       });
     },
 
+    _appendNewTweets: function(data, textStatus) {
+
+      if (data && data.count) {
+
+        if (data.min_id) {
+          this.$timeline.attr('data-min-id', data.min_id);
+        }
+        this.$timeline.append(data.html);
+      }
+
+      this.$more.find('.spinner').hide();
+      this.$more.find('.load-more').show();
+    },
+
+    _loadMoreTimeline: function() {
+
+      this.$more.find('.load-more').hide();
+      this.$more.find('.spinner').show();
+
+      $.ajax({
+        type: 'GET',
+        data: {max_id: this.$timeline.attr('data-min-id'), page: 1},
+        dataType: 'json',
+        success: $.proxy(this, '_appendNewTweets')
+      });
+
+      return false;
+    },
+
     _updateRelativeTime: function() {
 
       $('[data-time]').each(function(i, element) {
@@ -477,6 +507,8 @@
         )
         .delegate('a.retweet', 'click', $.proxy(this, '_retweet'))
         .delegate('a.in-reply-to', 'click', $.proxy(this, '_loadConversation'));
+
+      this.$more.find('.load-more').click($.proxy(this, '_loadMoreTimeline'));
     },
 
     run: function() {

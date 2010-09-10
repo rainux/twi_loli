@@ -12,7 +12,7 @@
 
 - newly_created = false unless defined?(newly_created)
 - li_class = []
-- li_class << 'buffered' if request.xhr?
+- li_class << 'buffered' if request.xhr? && !params[:max_id]
 - li_class << 'newly_created' if newly_created
 
 %li.status{ |

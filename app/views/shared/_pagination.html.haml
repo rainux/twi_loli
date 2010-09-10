@@ -1,4 +1,7 @@
 #pagination
+  .more
+    = image_tag('more-loader.gif', :class => 'spinner')
+    = link_to 'More', '#', :class => 'load-more'
   = link_to 'Older', older
   - if @newer_page > 0
     = link_to 'Newer', newer
