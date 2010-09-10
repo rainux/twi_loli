@@ -64,7 +64,7 @@
       this.$notifyBar = $('#new_statuses_notification');
       this.$statusesUpdate = $('#statuses_update');
       this.$timeline = $('#timeline');
-      this.$more = $('#pagination .more');
+      this.$loadMore = $('#pagination .load-more');
       this.$window = $(window);
       this.$document = $(window.document);
 
@@ -469,8 +469,7 @@
 
       this._loadingMoreTimeline = true;
 
-      this.$more.find('.load-more').hide();
-      this.$more.find('.spinner').show();
+      this.$loadMore.css('visibility', 'hidden').parent().addClass('big-spinner');
 
       $.ajax({
         type: 'GET',
@@ -479,8 +478,7 @@
         success: $.proxy(this, '_appendNewTweets'),
         complete: $.proxy(function() {
 
-          this.$more.find('.spinner').hide();
-          this.$more.find('.load-more').show();
+          this.$loadMore.css('visibility', 'visible').parent().removeClass('big-spinner');
           this._loadingMoreTimeline = false;
         }, this)
       });
@@ -530,7 +528,7 @@
         .delegate('a.retweet', 'click', $.proxy(this, '_retweet'))
         .delegate('a.in-reply-to', 'click', $.proxy(this, '_loadConversation'));
 
-      this.$more.find('.load-more').click($.proxy(this, '_loadMoreTimeline'));
+      this.$loadMore.click($.proxy(this, '_loadMoreTimeline'));
 
       this.$window.scroll($.proxy(this, '_autoLoadMoreTimeline'));
     },
