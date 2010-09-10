@@ -77,6 +77,7 @@ class ApplicationController < ActionController::Base
       )
       data = {
         :html => html,
+        :newly_created => newly_created,
         :count => statuses.size
       }
       unless newly_created
