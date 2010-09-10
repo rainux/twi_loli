@@ -53,6 +53,8 @@
 
     _refreshingTimeline: false,
     _loadingMoreTimeline: false,
+    _hasTopBuffered: false,
+    _hasBottomBuffered: false,
     _statusBoxAutoKeyupIntervalId: null,
     _refreshTimelineIntervalId: null,
     _updateRelativeTimeIntervalId: null,
@@ -425,6 +427,7 @@
         });
 
         window.scrollBy(0, height - removeHeight);
+        this._hasTopBuffered = true;
       }
     },
 
@@ -454,6 +457,7 @@
           this.$timeline.attr('data-min-id', data.min_id);
         }
         this.$timeline.append(data.html);
+        this._hasBottomBuffered = true;
       }
     },
 
@@ -487,6 +491,51 @@
 
       if (remainingSpace < 500) {
         this._loadMoreTimeline();
+      }
+    },
+
+    _eraseTopBufferedMark: function() {
+
+      if (!this._hasTopBuffered) { return; }
+
+      var $topBuffered = this.$timeline
+        .find('> li.status.buffered.top:not(.animating)');
+
+      if (!$topBuffered.length) { return; }
+
+      if ($topBuffered.last().offset().top - this.$window.scrollTop() > 200) {
+
+        this._hasTopBuffered = false;
+        $topBuffered.addClass('animating').animate({
+          backgroundColor: '#fff'
+        }, 10000, function() {
+
+          $topBuffered.removeClass('buffered top animating');
+        });
+      }
+    },
+
+    _eraseBottomBufferedMark: function() {
+
+      if (!this._hasBottomBuffered) { return; }
+
+      var $bottomBuffered = this.$timeline
+        .find('> li.status.buffered.bottom:not(.animating)');
+
+      if (!$bottomBuffered.length) { return; }
+
+      if (this.$window.scrollTop() + this.$window.height() -
+        $bottomBuffered.first().offset().top -
+        $bottomBuffered.first().outerHeight() > 200) {
+
+        this._hasBottomBuffered = false;
+
+        $bottomBuffered.addClass('animating').animate({
+          backgroundColor: '#fff'
+        }, 10000, function() {
+
+          $bottomBuffered.removeClass('buffered bottom animating');
+        });
       }
     },
 
@@ -524,6 +573,8 @@
       this.$loadMore.click($.proxy(this, '_loadMoreTimeline'));
 
       this.$window.scroll($.proxy(this, '_autoLoadMoreTimeline'));
+      this.$window.scroll($.proxy(this, '_eraseTopBufferedMark'));
+      this.$window.scroll($.proxy(this, '_eraseBottomBufferedMark'));
     },
 
     run: function() {
