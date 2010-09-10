@@ -6,3 +6,4 @@ tmp/tags
 config/config.yml
 app/stylesheets/.sass-cache/
 public/stylesheets/*.css
+public/javascripts/twi_loli.js
