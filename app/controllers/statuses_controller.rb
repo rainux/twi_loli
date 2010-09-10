@@ -73,7 +73,7 @@ class StatusesController < ApplicationController
 
     @status = Twitter.statuses.update! params[:status].merge(:source => 'TwiLoli')
 
-  rescue Grackle::TwitterError => error
+  rescue => error
     error_message = extract_error_message(error)
 
   ensure
