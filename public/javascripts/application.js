@@ -52,6 +52,7 @@
   var TwiLoli = {
 
     _refreshingTimeline: false,
+    _loadingMoreTimeline: false,
     _statusBoxAutoKeyupIntervalId: null,
     _refreshTimelineIntervalId: null,
     _updateRelativeTimeIntervalId: null,
@@ -64,6 +65,8 @@
       this.$statusesUpdate = $('#statuses_update');
       this.$timeline = $('#timeline');
       this.$more = $('#pagination .more');
+      this.$window = $(window);
+      this.$document = $(window.document);
 
       return this;
     },
@@ -459,9 +462,15 @@
 
       this.$more.find('.spinner').hide();
       this.$more.find('.load-more').show();
+
+      this._loadingMoreTimeline = false;
     },
 
     _loadMoreTimeline: function() {
+
+      if (this._loadingMoreTimeline) { return; }
+
+      this._loadingMoreTimeline = true;
 
       this.$more.find('.load-more').hide();
       this.$more.find('.spinner').show();
@@ -474,6 +483,16 @@
       });
 
       return false;
+    },
+
+    _autoLoadMoreTimeline: function() {
+
+      var remainingSpace = this.$document.height() -
+        (this.$window.scrollTop() + this.$window.height());
+
+      if (remainingSpace < 500) {
+        this._loadMoreTimeline();
+      }
     },
 
     _updateRelativeTime: function() {
@@ -509,6 +528,8 @@
         .delegate('a.in-reply-to', 'click', $.proxy(this, '_loadConversation'));
 
       this.$more.find('.load-more').click($.proxy(this, '_loadMoreTimeline'));
+
+      this.$window.scroll($.proxy(this, '_autoLoadMoreTimeline'));
     },
 
     run: function() {
