@@ -432,8 +432,6 @@
           .text(totalCount + ' new tweets.')
           .show();
       }
-
-      this._refreshingTimeline = false;
     },
 
     _refreshTimeline: function() {
@@ -446,7 +444,11 @@
         type: 'GET',
         data: {since_id: this.$timeline.attr('data-max-id')},
         dataType: 'json',
-        success: $.proxy(this, '_prependNewTweets')
+        success: $.proxy(this, '_prependNewTweets'),
+        complete: $.proxy(function() {
+
+          this._refreshingTimeline = false;
+        }, this)
       });
     },
 
@@ -459,11 +461,6 @@
         }
         this.$timeline.append(data.html);
       }
-
-      this.$more.find('.spinner').hide();
-      this.$more.find('.load-more').show();
-
-      this._loadingMoreTimeline = false;
     },
 
     _loadMoreTimeline: function() {
@@ -479,7 +476,13 @@
         type: 'GET',
         data: {max_id: this.$timeline.attr('data-min-id'), page: 1},
         dataType: 'json',
-        success: $.proxy(this, '_appendNewTweets')
+        success: $.proxy(this, '_appendNewTweets'),
+        complete: $.proxy(function() {
+
+          this.$more.find('.spinner').hide();
+          this.$more.find('.load-more').show();
+          this._loadingMoreTimeline = false;
+        }, this)
       });
 
       return false;
