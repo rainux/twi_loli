@@ -48,6 +48,15 @@
       return $tweetBox.fadeIn();
     },
 
+    _closeTweetBox: function(event) {
+
+      var $tweetBox = $(event.currentTarget).parents('.tweet-box');
+
+      $tweetBox.fadeOut('normal', function() {
+        $(this).remove();
+      });
+    },
+
     _tweetBoxAutoKeyupOn: function(event) {
 
       this._tweetBoxAutoKeyupIntervalId = setInterval($.proxy(function() {
@@ -563,6 +572,10 @@
     bindEventHandlers: function() {
 
       this.$tweetBoxes
+        .delegate(
+          '.tweet-box.floating .status-field-char-counter', 'dblclick',
+          $.proxy(this, '_closeTweetBox')
+        )
         .delegate(
           '#status_status', 'focus',
           $.proxy(this, '_tweetBoxAutoKeyupOn')

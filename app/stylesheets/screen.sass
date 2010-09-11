@@ -102,6 +102,9 @@ body.three-col
           position: absolute
           .inner-box
             border: 1px solid gray
+            .info
+              .message
+                display: block
         .inner-box
           padding: 10px 20px 20px
           .bar
@@ -122,6 +125,16 @@ body.three-col
               height: auto
               width: 98%
               resize: none
+            .message
+              width: 470px
+              float: left
+              padding: 8px
+              display: none
+              &:not(.error)
+                color: gray
+                padding-left: 0
+              &.error
+                margin: 0
             .status-btn
               float: right
               input#status_submit
