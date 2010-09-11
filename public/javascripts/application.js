@@ -74,7 +74,7 @@
 
       var match, inReplyToStatusId, inReplyTo;
 
-      inReplyToStatusId = $tweetText.parent().find('#status_in_reply_to_status_id').val();
+      inReplyToStatusId = $tweetText.parent().find('.status_in_reply_to_status_id').val();
       if (inReplyToStatusId) {
 
         inReplyTo = $('#status_' + inReplyToStatusId).attr('data-user');
@@ -133,7 +133,7 @@
 
       if (event.ctrlKey && event.which == 13) {
         $(event.currentTarget).parents('.tweet-box')
-          .find('#status_submit').click();
+          .find('.status_submit').click();
       }
     },
 
@@ -141,7 +141,7 @@
 
       var $tweetSubmit = $(event.currentTarget);
       var $tweetBox = $tweetSubmit.parents('.tweet-box');
-      var $tweetText = $tweetBox.find('#status_status');
+      var $tweetText = $tweetBox.find('.status_status');
       $tweetSubmit.css('visibility', 'hidden').parent().addClass('big-spinner');
 
       if ($tweetBox[0] != this.$tweetBox[0]) {
@@ -216,9 +216,9 @@
       var $tweet = $(event.currentTarget).parents('.status:first');
 
       var $tweetBox = this._cloneTweetBox(event, $tweet.attr('id'));
-      var $tweetText = $tweetBox.find('#status_status');
+      var $tweetText = $tweetBox.find('.status_status');
 
-      $tweetBox.find('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
+      $tweetBox.find('.status_in_reply_to_status_id').val($tweet.attr('data-id'));
 
       var status;
       if (event.ctrlKey) {
@@ -239,7 +239,7 @@
 
       var $tweet = $(event.currentTarget).parents('.status:first');
       var $tweetBox = this._cloneTweetBox(event, $tweet.attr('id'));
-      var $tweetText = $tweetBox.find('#status_status');
+      var $tweetText = $tweetBox.find('.status_status');
 
       var mentionedUsers = $tweet.attr('data-mentioned-users').split(' ');
 
@@ -248,7 +248,7 @@
         return '@' + user;
       });
 
-      $tweetBox.find('#status_in_reply_to_status_id').val($tweet.attr('data-id'));
+      $tweetBox.find('.status_in_reply_to_status_id').val($tweet.attr('data-id'));
 
       var status;
       if (event.ctrlKey) {
@@ -270,7 +270,7 @@
       var $tweet = $(event.currentTarget).parents('.status:first');
       var $content = $tweet.find('.content:first').clone();
       var $tweetBox = this._cloneTweetBox(event, $tweet.attr('id'));
-      var $tweetText = $tweetBox.find('#status_status');
+      var $tweetText = $tweetBox.find('.status_status');
 
       $content.find('a[data-truncated=true]').each(function(i, link) {
 
@@ -278,7 +278,7 @@
         $link.text($link.attr('href'));
       });
 
-      $tweetBox.find('#status_in_reply_to_status_id').val('');
+      $tweetBox.find('.status_in_reply_to_status_id').val('');
       $tweetText
         .val('RT @' + $tweet.attr('data-user') + ': ' + $content.text())
         .focus()
@@ -592,23 +592,23 @@
           $.proxy(this, '_closeTweetBox')
         )
         .delegate(
-          '#status_status', 'focus',
+          '.status_status', 'focus',
           $.proxy(this, '_tweetBoxAutoKeyupOn')
         )
         .delegate(
-          '#status_status', 'blur',
+          '.status_status', 'blur',
           $.proxy(this, '_tweetBoxAutoKeyupOff')
         )
         .delegate(
-          '#status_status', 'keyup',
+          '.status_status', 'keyup',
           $.proxy(this, '_updateTweetTextHint')
         )
         .delegate(
-          '#status_status', 'keyup',
+          '.status_status', 'keyup',
           $.proxy(this, '_trySubmitStatus')
         )
         .delegate(
-          '#status_submit', 'click',
+          '.status_submit', 'click',
           $.proxy(this, '_submitStatus')
         );
 

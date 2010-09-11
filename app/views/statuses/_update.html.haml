@@ -10,9 +10,11 @@
           %span.chars-left-notice
             %strong.status-field-char-counter 140
         .info
-          = f.text_area :status, :size => '60x4'
-          = f.hidden_field :in_reply_to_status_id
+          = f.text_area :status, :size => '60x4', :id => nil,
+            :class => 'status_status'
+          = f.hidden_field :in_reply_to_status_id, :id => nil,
+            :class => 'status_in_reply_to_status_id'
           .message
             Double click the characters counter to close me.
           .status-btn
-            = f.submit 'update'
+            = f.submit 'update', :id => nil, :class => 'status_submit'
