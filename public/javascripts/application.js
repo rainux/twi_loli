@@ -419,22 +419,24 @@
         this.$timeline.prepend(data.html);
 
         var $newlyCreated = this.$timeline.find('> li.status.newly_created');
-        var removedHeight = _.reduce($newlyCreated, 0, function(memo, li) {
-          return memo + $(li).outerHeight();
-        });
-
-        if (!data.newly_created) {
-          $newlyCreated.remove();
-        }
-
         var $buffered = this.$timeline
           .find('> li.status.buffered.top');
 
-        var height = _.reduce($buffered, 0, function(memo, li) {
-          return memo + $(li).outerHeight();
-        });
+        if (data.newly_created) {
+          window.scrollBy(0, $newlyCreated.first().outerHeight());
 
-        window.scrollBy(0, height - removedHeight);
+        } else {
+          var height = _.reduce($buffered, 0, function(memo, li) {
+            return memo + $(li).outerHeight();
+          });
+
+          var removedHeight = _.reduce($newlyCreated, 0, function(memo, li) {
+            return memo + $(li).outerHeight();
+          });
+
+          $newlyCreated.remove();
+          window.scrollBy(0, height - removedHeight);
+        }
         this._hasTopBuffered = true;
       }
     },
