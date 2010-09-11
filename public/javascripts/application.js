@@ -174,7 +174,14 @@
 
             if ($tweetBox[0] == this.$tweetBox[0]) {
               $tweetText.val('').keyup();
+
             } else {
+              $('#message .success')
+                .text('Successfully tweeted.')
+                .fadeIn('slow')
+                .delay(5000)
+                .fadeOut('slow');
+
               $tweetBox.remove();
             }
           }
