@@ -29,6 +29,7 @@
       if (!$tweetBox.length) {
         $tweetBox = this.$tweetBox
           .clone()
+          .draggable()
           .addClass('floating')
           .attr('id', 'tweet-box-' + id);
         this.$tweetBox.after($tweetBox);
@@ -43,7 +44,10 @@
         (this.$window.scrollTop() + this.$window.height())
       if (marginBottom > 0) { top = top - marginBottom; }
 
-      $tweetBox.css('top', top);
+      $tweetBox.css({
+        top: top,
+        left: this.$tweetBox.offset().left
+      });
 
       return $tweetBox.fadeIn();
     },
