@@ -356,7 +356,7 @@
 
       if ($inReplyToTweet.length) {
 
-        $inReplyToTweet = $inReplyToTweet.clone();
+        $inReplyToTweet = $inReplyToTweet.clone().removeClass('buffered top bottom');
         $inReplyToTweet.find('.conversations').remove();
 
         $container.find('.conversations').append($inReplyToTweet);
