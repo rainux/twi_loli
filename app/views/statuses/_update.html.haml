@@ -1,12 +1,12 @@
 - hide = false unless defined?(hide)
 
-#status_update_box{:class => hide ? 'hide' : nil}
+.tweet-box{:class => hide ? 'hide' : nil}
   = form_for :status, :url => statuses_path do |f|
     .bar
       %h3
-        = f.label :status, "What's happening?", :class => 'doing'
-      %span#chars_left_notice
-        %strong#status-field-char-counter 140
+        = label_tag nil, "What's happening?", :class => 'doing'
+      %span.chars-left-notice
+        %strong.status-field-char-counter 140
     .info
       = f.text_area :status, :size => '60x4'
       = f.hidden_field :in_reply_to_status_id

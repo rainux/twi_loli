@@ -6,14 +6,13 @@
     _loadingMoreTimeline: false,
     _hasTopBuffered: false,
     _hasBottomBuffered: false,
-    _statusBoxAutoKeyupIntervalId: null,
+    _tweetBoxAutoKeyupIntervalId: null,
     _refreshTimelineIntervalId: null,
     _updateRelativeTimeIntervalId: null,
 
     _init: function() {
 
-      this.$statusBox = $('#status_status');
-      this.$statusSubmit = $('#status_submit');
+      this.$tweetText = $('#status_status');
       this.$timeline = $('#timeline');
       this.$loadMore = $('#pagination .load-more');
       this.$window = $(window);
@@ -22,28 +21,28 @@
       return this;
     },
 
-    _statusBoxAutoKeyupOn: function() {
+    _tweetBoxAutoKeyupOn: function(event) {
 
-      this._statusBoxAutoKeyupIntervalId = setInterval($.proxy(function() {
+      this._tweetBoxAutoKeyupIntervalId = setInterval($.proxy(function() {
 
-        this.$statusBox.keyup();
+        $(event.currentTarget).keyup();
       }, this), 100);
     },
 
-    _statusBoxAutoKeyupOff: function() {
+    _tweetBoxAutoKeyupOff: function() {
 
-      clearInterval(this._statusBoxAutoKeyupIntervalId);
+      clearInterval(this._tweetBoxAutoKeyupIntervalId);
     },
 
-    _buildDoingText: function() {
+    _buildDoingText: function($tweetText) {
 
       var match, inReplyToStatusId, inReplyTo;
 
-      inReplyToStatusId = $('#status_in_reply_to_status_id').val();
+      inReplyToStatusId = $tweetText.parent().find('#status_in_reply_to_status_id').val();
       if (inReplyToStatusId) {
 
         inReplyTo = $('#status_' + inReplyToStatusId).attr('data-user');
-        match = this.$statusBox.val().match(
+        match = $tweetText.val().match(
           new RegExp('(^| )@' + inReplyTo + '(?= |$)')
         );
 
@@ -53,17 +52,17 @@
         }
       }
 
-      match = this.$statusBox.val().match(/^\s*@(\w+)(?= |$)/);
+      match = $tweetText.val().match(/^\s*@(\w+)(?= |$)/);
       if (match) {
         return 'Reply to ' + match[1] + ':';
       }
 
-      match = this.$statusBox.val().match(/RT @\w+\b.+/);
+      match = $tweetText.val().match(/RT @\w+\b.+/);
       if (match) {
         return 'Retweet with comment:';
       }
 
-      match = this.$statusBox.val().match(/(^| )@(\w+)(?= |$)/g);
+      match = $tweetText.val().match(/(^| )@(\w+)(?= |$)/g);
       if (match) {
         match = $.map(match, function(name) {
           return $.trim(name);
@@ -74,11 +73,13 @@
       return "What's happening?";
     },
 
-    _updateStatusBoxHint: function() {
+    _updateTweetTextHint: function(event) {
 
-      var count, color;
+      var count, color,
+        $tweetText = $(event.currentTarget);
+      var $tweetBox = $tweetText.parents('.tweet-box');
 
-      count = 140 - this.$statusBox.val().length;
+      count = 140 - $tweetText.val().length;
 
       if (count >= 20) {
         color = 'rgb(204, 204, 204)';
@@ -88,11 +89,11 @@
         color = 'rgb(212, 13, 18)';
       }
 
-      $('#status-field-char-counter').text(count).css('color', color);
-      $('label.doing').text(this._buildDoingText());
+      $tweetBox.find('.status-field-char-counter').text(count).css('color', color);
+      $tweetBox.find('label.doing').text(this._buildDoingText($tweetText));
     },
 
-    _statusSubmitted: function(data, textStatus) {
+    _statusSubmitted: function($tweetText, data, textStatus) {
 
       if (data.error) {
 
@@ -103,25 +104,30 @@
           .fadeOut('slow');
       } else {
 
-        this._prependNewTweets.apply(this, arguments);
-        this.$statusBox.val('').keyup();
+        this._prependNewTweets(data, textStatus);
+        $tweetText.val('').keyup();
       }
     },
 
-    _submitStatus: function() {
+    _submitStatus: function(event) {
 
-      this.$statusSubmit.css('visibility', 'hidden').parent().addClass('big-spinner');
+      var $tweetSubmit = $(event.currentTarget);
+      var $tweetBox = $tweetSubmit.parents('.tweet-box');
+      var $tweetText = $tweetBox.find('#status_status');
+      $tweetSubmit.css('visibility', 'hidden').parent().addClass('big-spinner');
 
-      var $form = $('#status_update_box form');
+      var $form = $tweetBox.find('form');
 
       $.ajax({
         type: 'POST',
         url: $form.attr('action'),
         data: $form.serialize(),
-        success: $.proxy(this, '_statusSubmitted'),
+        success: $.proxy(function(data, textStatus) {
+            this._statusSubmitted($tweetText, data, textStatus);
+          }, this),
         complete: $.proxy(function() {
 
-          this.$statusSubmit.css('visibility', 'visible').parent().removeClass('big-spinner');
+          $tweetSubmit.css('visibility', 'visible').parent().removeClass('big-spinner');
         }, this)
       });
 
@@ -130,7 +136,7 @@
 
     _reply: function(event) {
 
-      if (this.$statusBox.length) {
+      if (this.$tweetText.length) {
 
         var $tweet = $(event.currentTarget).parents('.status:first');
 
@@ -141,10 +147,10 @@
         if (event.ctrlKey) {
           status = '@' + $tweet.attr('data-user') + ' '
         } else {
-          status = '@' + $tweet.attr('data-user') + ' ' + this.$statusBox.val();
+          status = '@' + $tweet.attr('data-user') + ' ' + this.$tweetText.val();
         }
 
-        this.$statusBox.val(status)
+        this.$tweetText.val(status)
           .focus()
           .keyup()[0]
           .setSelectionRange(256, 256);
@@ -155,7 +161,7 @@
 
     _replyAll: function(event) {
 
-      if (this.$statusBox.length) {
+      if (this.$tweetText.length) {
 
         var $tweet = $(event.currentTarget).parents('.status:first');
         var mentionedUsers = $tweet.attr('data-mentioned-users').split(' ');
@@ -173,10 +179,10 @@
         if (event.ctrlKey) {
           status = mentionedUsers.join(' ') + ' ';
         } else {
-          status = mentionedUsers.join(' ') + ' ' + this.$statusBox.val();
+          status = mentionedUsers.join(' ') + ' ' + this.$tweetText.val();
         }
 
-        this.$statusBox.val(status)
+        this.$tweetText.val(status)
           .focus()
           .keyup()[0]
           .setSelectionRange(256, 256);
@@ -187,7 +193,7 @@
 
     _retweetWithComment: function(event) {
 
-      if (this.$statusBox.length) {
+      if (this.$tweetText.length) {
 
         var $tweet = $(event.currentTarget).parents('.status:first');
         var $content = $tweet.find('.content:first').clone();
@@ -200,7 +206,7 @@
 
         $('#status_update_box').removeClass('hide');
         $('#status_in_reply_to_status_id').val('');
-        this.$statusBox
+        this.$tweetText
           .val('RT @' + $tweet.attr('data-user') + ': ' + $content.text())
           .focus()
           .keyup()[0]
@@ -506,12 +512,23 @@
 
     bindEventHandlers: function() {
 
-      this.$statusBox
-        .focus($.proxy(this, '_statusBoxAutoKeyupOn'))
-        .blur($.proxy(this, '_statusBoxAutoKeyupOff'))
-        .keyup($.proxy(this, '_updateStatusBoxHint'));
-
-      this.$statusSubmit.click($.proxy(this, '_submitStatus'));
+      $('#content')
+        .delegate(
+          '#status_status', 'focus',
+          $.proxy(this, '_tweetBoxAutoKeyupOn')
+        )
+        .delegate(
+          '#status_status', 'blur',
+          $.proxy(this, '_tweetBoxAutoKeyupOff')
+        )
+        .delegate(
+          '#status_status', 'keyup',
+          $.proxy(this, '_updateTweetTextHint')
+        )
+        .delegate(
+          '#status_submit', 'click',
+          $.proxy(this, '_submitStatus')
+        );
 
       this.$timeline
         .delegate('a.reply', 'click', $.proxy(this, '_reply'))
