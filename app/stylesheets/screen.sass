@@ -92,32 +92,42 @@ body.three-col
       top: 50px
     p.error, p.notice
       margin-bottom: 0
-    .tweet-box
-      padding: 10px 20px 20px
-      .bar
-        position: relative
-        line-height: 2em
-        h3
-          margin: 5px 0
-        .chars-left-notice
+    #tweet-boxes
+      .tweet-box
+        +column(!content_columns, true)
+        background: white
+        z-index: 99
+        &.floating
+          display: none
           position: absolute
-          top: 0
-          right: 0
-          font-size: 2em
-          font-weight: bold
-          color: #ccc
-      .info
-        +clearfix
-        textarea#status_status
-          height: auto
-          width: 98%
-          resize: none
-        .status-btn
-          float: right
-          input#status_submit
-            padding: 6px 10px
-            width: 125px
-            color: #666
+          .inner-box
+            border: 1px solid gray
+        .inner-box
+          padding: 10px 20px 20px
+          .bar
+            position: relative
+            line-height: 2em
+            h3
+              margin: 5px 0
+            .chars-left-notice
+              position: absolute
+              top: 0
+              right: 0
+              font-size: 2em
+              font-weight: bold
+              color: #ccc
+          .info
+            +clearfix
+            textarea#status_status
+              height: auto
+              width: 98%
+              resize: none
+            .status-btn
+              float: right
+              input#status_submit
+                padding: 6px 10px
+                width: 125px
+                color: #666
     .profile
       padding: 20px
       h2

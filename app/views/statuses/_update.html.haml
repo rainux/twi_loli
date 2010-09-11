@@ -1,14 +1,16 @@
 - hide = false unless defined?(hide)
 
-.tweet-box{:class => hide ? 'hide' : nil}
-  = form_for :status, :url => statuses_path do |f|
-    .bar
-      %h3
-        = label_tag nil, "What's happening?", :class => 'doing'
-      %span.chars-left-notice
-        %strong.status-field-char-counter 140
-    .info
-      = f.text_area :status, :size => '60x4'
-      = f.hidden_field :in_reply_to_status_id
-      .status-btn
-        = f.submit 'update'
+#tweet-boxes
+  .tweet-box{:class => hide ? 'hide' : nil}
+    .inner-box
+      = form_for :status, :url => statuses_path do |f|
+        .bar
+          %h3
+            = label_tag nil, "What's happening?", :class => 'doing'
+          %span.chars-left-notice
+            %strong.status-field-char-counter 140
+        .info
+          = f.text_area :status, :size => '60x4'
+          = f.hidden_field :in_reply_to_status_id
+          .status-btn
+            = f.submit 'update'
