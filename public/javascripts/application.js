@@ -129,6 +129,14 @@
       $tweetBox.find('label.doing').text(this._buildDoingText($tweetText));
     },
 
+    _trySubmitStatus: function(event) {
+
+      if (event.ctrlKey && event.which == 13) {
+        $(event.currentTarget).parents('.tweet-box')
+          .find('#status_submit').click();
+      }
+    },
+
     _submitStatus: function(event) {
 
       var $tweetSubmit = $(event.currentTarget);
@@ -587,6 +595,10 @@
         .delegate(
           '#status_status', 'keyup',
           $.proxy(this, '_updateTweetTextHint')
+        )
+        .delegate(
+          '#status_status', 'keyup',
+          $.proxy(this, '_trySubmitStatus')
         )
         .delegate(
           '#status_submit', 'click',
