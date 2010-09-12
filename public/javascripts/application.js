@@ -46,7 +46,7 @@
 
       $tweetBox.css({
         top: top,
-        left: this.$tweetBox.offset().left
+        left: this.$tweetBox.parent().offset().left
       });
 
       return $tweetBox.fadeIn();
