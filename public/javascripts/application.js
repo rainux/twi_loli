@@ -362,10 +362,12 @@
 
       if ($inReplyToTweet.length) {
 
-        $inReplyToTweet = $inReplyToTweet.clone().removeClass('buffered top bottom');
+        $inReplyToTweet = $inReplyToTweet.clone()
+          .hide().removeClass('buffered top bottom');
         $inReplyToTweet.find('.conversations').remove();
 
-        $container.find('.conversations').append($inReplyToTweet);
+        $container.find('.conversations').append($inReplyToTweet)
+          .find('.status:last').fadeIn();
 
         this._loadNextInReplyTo($container, $inReplyToLink, $inReplyToTweet, isFull);
 
@@ -407,8 +409,9 @@
               .fadeOut('slow');
           } else {
 
-            var $tweet = $(data.html).removeClass('buffered');
-            $container.find('.conversations').append($tweet);
+            var $tweet = $(data.html).hide().removeClass('buffered');
+            $container.find('.conversations').append($tweet)
+              .find('.status:last').fadeIn();
 
             this._loadNextInReplyTo($container, $inReplyToLink, $tweet, isFull);
           }
