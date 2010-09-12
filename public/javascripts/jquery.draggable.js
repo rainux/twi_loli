@@ -1,9 +1,11 @@
 (function($) {
 
-  $.fn.draggable = function() {
+  $.fn.draggable = function(options) {
+
+    options = options || {};
 
     var move = $.proxy(function(event) {
-      if (this.data('mouseMove')) {
+      if (this.find(options.except)[0] != event.target && this.data('mouseMove')) {
         var changeX = event.pageX - this.data('mouseX');
         var changeY = event.pageY - this.data('mouseY');
 
@@ -19,13 +21,17 @@
     }, this);
 
     this.mousedown($.proxy(function(event) {
-      this.data('mouseMove', true);
-      this.data('mouseX', event.pageX);
-      this.data('mouseY', event.pageY);
+      if (this.find(options.except)[0] != event.target) {
+        this.data('mouseMove', true);
+        this.data('mouseX', event.pageX);
+        this.data('mouseY', event.pageY);
+      }
     }, this));
 
     this.mouseup($.proxy(function() {
-      this.data('mouseMove', false);
+      if (this.find(options.except)[0] != event.target) {
+        this.data('mouseMove', false);
+      }
     }, this));
 
     this.mouseout(move);

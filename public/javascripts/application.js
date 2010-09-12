@@ -29,7 +29,7 @@
       if (!$tweetBox.length) {
         $tweetBox = this.$tweetBox
           .clone()
-          .draggable()
+          .draggable({except: '.status_status'})
           .addClass('floating')
           .attr('id', 'tweet-box-' + id);
         this.$tweetBox.after($tweetBox);
