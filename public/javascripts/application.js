@@ -136,8 +136,13 @@
     _trySubmitStatus: function(event) {
 
       if (event.ctrlKey && event.which == 13) {
-        $(event.currentTarget).parents('.tweet-box')
-          .find('.status_submit').click();
+
+        var $tweetBox = $(event.currentTarget).parents('.tweet-box');
+
+        if (!$tweetBox.data('tweeting')) {
+          $tweetBox.data('tweeting', true);
+          $tweetBox.find('.status_submit').click();
+        }
       }
     },
 
@@ -209,6 +214,7 @@
         complete: $.proxy(function() {
 
           $tweetSubmit.css('visibility', 'visible').parent().removeClass('big-spinner');
+          $tweetBox.data('tweeting', false);
         }, this)
       });
 
