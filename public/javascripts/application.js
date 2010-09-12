@@ -457,7 +457,7 @@
 
         var $newlyCreated = this.$timeline.find('> li.status.newly_created');
         var $buffered = this.$timeline
-          .find('> li.status.buffered.top');
+          .find('> li.status.buffered.top:lt(' + data.count + ')');
 
         if (data.newly_created) {
           window.scrollBy(0, $newlyCreated.first().outerHeight());
