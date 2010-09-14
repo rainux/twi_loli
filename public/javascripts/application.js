@@ -557,7 +557,9 @@
           backgroundColor: '#fff'
         }, 10000, function() {
 
-          $topBuffered.removeClass('buffered top animating');
+          $topBuffered
+            .removeClass('buffered top animating')
+            .removeAttr('style');
         });
       }
     },
@@ -581,7 +583,9 @@
           backgroundColor: '#fff'
         }, 10000, function() {
 
-          $bottomBuffered.removeClass('buffered bottom animating');
+          $bottomBuffered
+            .removeClass('buffered bottom animating')
+            .removeAttr('style');
         });
       }
     },
