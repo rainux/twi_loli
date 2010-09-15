@@ -365,7 +365,7 @@
         $inReplyToTweet = $inReplyToTweet.clone()
           .hide()
           .removeClass('buffered top bottom animating')
-          .removeAttr('style');
+          .css({backgroundColor: null});
         $inReplyToTweet.find('.conversations').remove();
 
         $container.find('.conversations').append($inReplyToTweet)
@@ -561,7 +561,7 @@
 
           $topBuffered
             .removeClass('buffered top animating')
-            .removeAttr('style');
+            .css({backgroundColor: null});
         });
       }
     },
@@ -587,7 +587,7 @@
 
           $bottomBuffered
             .removeClass('buffered bottom animating')
-            .removeAttr('style');
+            .css({backgroundColor: null});
         });
       }
     },
