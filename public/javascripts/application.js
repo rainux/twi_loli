@@ -434,7 +434,11 @@
       var isFull = event.ctrlKey;
 
       if (isRootNode) {
-        $conversations.toggle();
+        if ($conversations.is(':visible')) {
+          $conversations.fadeOut();
+        } else {
+          $conversations.fadeIn();
+        }
       }
 
       if (!$conversations.length) {
