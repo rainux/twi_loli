@@ -35,6 +35,12 @@
         this.$tweetBox.after($tweetBox);
       }
 
+      $tweetBox.find('.inline-tweet').append(
+        $('#' + id).clone()
+          .removeClass('buffered top bottom animating')
+          .css({backgroundColor: null})
+      );
+
       var top = event.pageY - ($tweetBox.outerHeight() / 2);
 
       var marginTop = this.$window.scrollTop() - top;
@@ -635,7 +641,7 @@
           $.proxy(this, '_submitStatus')
         );
 
-      this.$timeline
+      this.$timeline.add(this.$tweetBoxes)
         .delegate('a.reply', 'click', $.proxy(this, '_reply'))
         .delegate('a.reply-all', 'click',
           $.proxy(this, '_replyAll')

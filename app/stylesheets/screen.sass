@@ -156,62 +156,6 @@ body.three-col
       #timeline_heading
         h1
           font-size: 1.5em
-      ol#timeline
-        margin: 0
-        li.status
-          +clearfix
-          border-bottom: 1px solid #eee
-          padding: 10px 0 8px
-          &:first-child
-            border-top: 1px solid #eee
-          &:hover
-            background: #f7f7f7 !important
-            > span.status-body ul.actions-hover
-              visibility: visible
-          &.buffered
-            background-color: #e3f1fa
-          span.thumb
-            display: block
-            position: absolute
-          span.status-body
-            display: block
-            margin-left: 56px
-            min-height: 48px
-            .retweet-icon
-              position: relative
-              display: inline-block
-              width: 18px
-              height: 14px
-              top: 2px
-              background-repeat: no-repeat
-              background-image: url("/images/sprite-icons.png")
-              background-position: -128px -64px
-            .lock-icon
-              background: transparent url(/images/lock_icon_small.png) no-repeat scroll 0 50%
-              display: inline-block
-              height: 10px
-              width: 8px
-          span.meta
-            display: block
-            color: #999
-            a
-              color: #999
-          ul.actions-hover
-            float: right
-            visibility: hidden
-            li
-              display: inline-block
-        ol.conversations
-          margin: 20px 0 0 30px
-          li.status
-            width: 100%
-            &:last-child
-              padding-bottom: 0
-              border: none
-            &:hover
-              background: #f7f7f7
-              > span.status-body ul.actions-hover
-                visibility: visible
       #pagination
         padding-top: 20px
         +clearfix
@@ -232,6 +176,69 @@ body.three-col
 
     .sign-in
       padding: 20px
+
+ol#timeline, ol.inline-tweet
+  margin: 0
+
+ol.inline-tweet
+  li.status
+    ul.actions-hover
+      display: none
+
+li.status
+  +clearfix
+  border-bottom: 1px solid #eee
+  padding: 10px 0 8px
+  &:first-child
+    border-top: 1px solid #eee
+  &:hover
+    background: #f7f7f7 !important
+    > span.status-body ul.actions-hover
+      visibility: visible
+  &.buffered
+    background-color: #e3f1fa
+  span.thumb
+    display: block
+    position: absolute
+  span.status-body
+    display: block
+    margin-left: 56px
+    min-height: 48px
+    .retweet-icon
+      position: relative
+      display: inline-block
+      width: 18px
+      height: 14px
+      top: 2px
+      background-repeat: no-repeat
+      background-image: url("/images/sprite-icons.png")
+      background-position: -128px -64px
+    .lock-icon
+      background: transparent url(/images/lock_icon_small.png) no-repeat scroll 0 50%
+      display: inline-block
+      height: 10px
+      width: 8px
+  span.meta
+    display: block
+    color: #999
+    a
+      color: #999
+  ul.actions-hover
+    float: right
+    visibility: hidden
+    li
+      display: inline-block
+  ol.conversations
+    margin: 20px 0 0 30px
+    li.status
+      width: 100%
+      &:last-child
+        padding-bottom: 0
+        border: none
+      &:hover
+        background: #f7f7f7
+        > span.status-body ul.actions-hover
+          visibility: visible
 
 body#profile
   #content
