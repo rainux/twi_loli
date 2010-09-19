@@ -344,9 +344,7 @@
 
       var inReplyToStatusId = $inReplyToLink.attr('data-in-reply-to-status-id');
 
-      var $inReplyToTweet = $inReplyToLink
-        .parents('.status:last')
-        .find('#status_' + inReplyToStatusId);
+      var $inReplyToTweet = $container.find('#status_' + inReplyToStatusId);
 
       if ($inReplyToTweet.length) {
 
