@@ -4,8 +4,13 @@
 
     options = options || {};
 
+    var is_excepted = $.proxy(function(target) {
+      var excepted = this.find(options.except);
+      return (excepted.index(target) >= 0 || excepted.has(target).length > 0);
+    }, this);
+
     var move = $.proxy(function(event) {
-      if (this.find(options.except)[0] != event.target && this.data('mouseMove')) {
+      if (!is_excepted(event.target) && this.data('mouseMove')) {
         var changeX = event.pageX - this.data('mouseX');
         var changeY = event.pageY - this.data('mouseY');
 
@@ -21,7 +26,7 @@
     }, this);
 
     this.mousedown($.proxy(function(event) {
-      if (this.find(options.except)[0] != event.target) {
+      if (!is_excepted(event.target)) {
         this.data('mouseMove', true);
         this.data('mouseX', event.pageX);
         this.data('mouseY', event.pageY);
@@ -29,7 +34,7 @@
     }, this));
 
     this.mouseup($.proxy(function() {
-      if (this.find(options.except)[0] != event.target) {
+      if (!is_excepted(event.target)) {
         this.data('mouseMove', false);
       }
     }, this));
