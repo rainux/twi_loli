@@ -60,7 +60,7 @@
 
     _closeTweetBox: function(event) {
 
-      var $tweetBox = $(event.currentTarget).parents('.tweet-box');
+      var $tweetBox = $(event.currentTarget).closest('.tweet-box');
 
       $tweetBox.fadeOut('normal', function() {
         $(this).remove();
@@ -123,7 +123,7 @@
 
       var count, color,
         $tweetText = $(event.currentTarget);
-      var $tweetBox = $tweetText.parents('.tweet-box');
+      var $tweetBox = $tweetText.closest('.tweet-box');
 
       count = 140 - $tweetText.val().length;
 
@@ -143,7 +143,7 @@
 
       if (event.ctrlKey && event.which == 13) {
 
-        var $tweetBox = $(event.currentTarget).parents('.tweet-box');
+        var $tweetBox = $(event.currentTarget).closest('.tweet-box');
 
         if (!$tweetBox.data('tweeting')) {
           $tweetBox.data('tweeting', true);
@@ -155,7 +155,7 @@
     _submitStatus: function(event) {
 
       var $tweetSubmit = $(event.currentTarget);
-      var $tweetBox = $tweetSubmit.parents('.tweet-box');
+      var $tweetBox = $tweetSubmit.closest('.tweet-box');
       var $tweetText = $tweetBox.find('.status_status');
       $tweetSubmit.css('visibility', 'hidden').parent().addClass('big-spinner');
 
@@ -229,7 +229,7 @@
 
     _reply: function(event) {
 
-      var $tweet = $(event.currentTarget).parents('.status:first');
+      var $tweet = $(event.currentTarget).closest('.status');
 
       var $tweetBox = this._cloneTweetBox(event, $tweet.attr('id'));
       var $tweetText = $tweetBox.find('.status_status');
@@ -253,7 +253,7 @@
 
     _replyAll: function(event) {
 
-      var $tweet = $(event.currentTarget).parents('.status:first');
+      var $tweet = $(event.currentTarget).closest('.status');
       var $tweetBox = this._cloneTweetBox(event, $tweet.attr('id'));
       var $tweetText = $tweetBox.find('.status_status');
 
@@ -283,7 +283,7 @@
 
     _retweetWithComment: function(event) {
 
-      var $tweet = $(event.currentTarget).parents('.status:first');
+      var $tweet = $(event.currentTarget).closest('.status');
       var $content = $tweet.find('.content:first').clone();
       var $tweetBox = this._cloneTweetBox(event, $tweet.attr('id'));
       var $tweetText = $tweetBox.find('.status_status');
@@ -307,7 +307,7 @@
     _retweet: function(event) {
 
       var $retweetLink = $(event.currentTarget);
-      var tweetId = $retweetLink.parents('.status:first').attr('data-id');
+      var tweetId = $retweetLink.closest('.status').attr('data-id');
       $retweetLink.css('visibility', 'hidden').parent().addClass('small-spinner');
 
       $.ajax({
