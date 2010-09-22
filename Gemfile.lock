@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/rainux/twitter_oauth.git
+  revision: d192484
+  specs:
+    twitter_oauth (0.4.3)
+      json (>= 1.1.9)
+      mime-types (>= 1.16)
+      oauth (>= 0.4.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -72,10 +81,6 @@ GEM
     thor (0.14.0)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
-    twitter_oauth (0.4.3)
-      json (>= 1.1.9)
-      mime-types (>= 1.16)
-      oauth (>= 0.4.1)
     tzinfo (0.3.23)
     yajl-ruby (0.7.7)
 
@@ -87,5 +92,5 @@ DEPENDENCIES
   grackle
   hashie
   rails (~> 3.0.0)
-  twitter_oauth
+  twitter_oauth!
   yajl-ruby

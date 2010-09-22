@@ -73,6 +73,7 @@ class SessionsController < ApplicationController
 
   def create_oauth_client
     @oauth_client = TwitterOAuth::Client.new(
+      :ssl => true,
       :consumer_key => AppConfig.twitter.consumer_key,
       :consumer_secret => AppConfig.twitter.consumer_secret
     )
