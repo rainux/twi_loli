@@ -81,6 +81,8 @@ GEM
     thor (0.14.0)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
+    twitter-text (1.1.8)
+      actionpack
     tzinfo (0.3.23)
     yajl-ruby (0.7.7)
 
@@ -92,5 +94,6 @@ DEPENDENCIES
   grackle
   hashie
   rails (~> 3.0.0)
+  twitter-text
   twitter_oauth!
   yajl-ruby

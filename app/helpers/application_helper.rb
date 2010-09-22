@@ -1,19 +1,19 @@
 module ApplicationHelper
+  include Twitter::Autolink
+  include Twitter::Extractor
+
   def pagination(options)
     render :partial => 'shared/pagination', :locals => options
   end
 
   def format_tweet(tweet)
     tweet = tweet.gsub(/(\r\n?|\n)/, '<br />')
-    tweet = auto_link_usernames(tweet)
-    tweet = auto_link_tags(tweet)
-    tweet = auto_link_urls(tweet)
-  end
-
-  def extract_mentioned_users(tweet)
-    tweet.scan(%r{@[0-9A-Za-z_]+}).collect do |user|
-      user[1..-1]
-    end
+    tweet = auto_link(
+      tweet,
+      :username_url_base => root_path,
+      :list_url_base => root_path,
+      :hashtag_url_base => URI.encode('http://search.twitter.com/search?q=#')
+    )
   end
 
   def bigger_image_url(image_url)
@@ -37,26 +37,5 @@ module ApplicationHelper
       result << (profile_user.profile_background_tile ? 'repeat' : 'no-repeat')
     end
     result.join(' ')
-  end
-
-  private
-  def auto_link_urls(tweet)
-    tweet.gsub %r{[0-9A-Za-z]{2,5}://([0-9A-Za-z_-]+\.)+[0-9A-Za-z]*[0-9A-Za-z/+=%&_.~?:\[\]-]*} do |url|
-      short_url = truncate(url)
-      link_to short_url, url, :target => '_blank', :title => url, 'data-truncated' => (url != short_url)
-    end
-  end
-
-  def auto_link_usernames(tweet)
-    tweet.gsub %r{@[0-9A-Za-z_/]+} do |user|
-      user = user[1..-1]
-      '@' + link_to(user, "/#{user}")
-    end
-  end
-
-  def auto_link_tags(tweet)
-    tweet.gsub %r{#\w+} do |tag|
-      link_to tag, search_path(:q => tag[1..-1])
-    end
   end
 end

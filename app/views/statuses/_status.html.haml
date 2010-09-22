@@ -6,7 +6,7 @@
 
 - status.created_at = Time.zone.parse(status.created_at)
 
-- mentioned_users = (extract_mentioned_users(status.text) - [status.user.screen_name]).uniq
+- mentioned_users = (extract_mentioned_screen_names(status.text) - [status.user.screen_name]).uniq
 - if logged_in?
   - mentioned_users -= [current_user.screen_name]
 
