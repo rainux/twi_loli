@@ -4,7 +4,7 @@ module ApplicationHelper
   end
 
   def format_tweet(tweet)
-    tweet = tweet.gsub /\s+/, ' '
+    tweet = tweet.gsub(/(\r\n?|\n)/, '<br />')
     tweet = auto_link_usernames(tweet)
     tweet = auto_link_tags(tweet)
     tweet = auto_link_urls(tweet)
