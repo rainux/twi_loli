@@ -34,11 +34,11 @@ class ApplicationController < ActionController::Base
 
   def set_twitter_auth
     if logged_in?
-      Twitter.auth = session[:auth]
-      Twitter.api = Grackle::Client::TWITTER_API_HOSTS_MAPPING[Twitter.auth[:type]]
+      Twitter::Client.auth = session[:auth]
+      Twitter::Client.api = Grackle::Client::TWITTER_API_HOSTS_MAPPING[Twitter::Client.auth[:type]]
       Time.zone = session[:user].time_zone
     else
-      Twitter.auth = {}
+      Twitter::Client.auth = {}
     end
   end
 
@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_api_rate_limit_status
-    @api_rate_limit_status = Twitter.account.rate_limit_status? if logged_in?
+    @api_rate_limit_status = Twitter::Client.account.rate_limit_status? if logged_in?
   end
 
   def prepare_options

@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    Twitter.auth = {
+    Twitter::Client.auth = {
       :type => :basic,
       :username => params[:session][:username],
       :password => params[:session][:password]
@@ -33,7 +33,7 @@ class SessionsController < ApplicationController
       session[:request_token_secret],
       :oauth_verifier => params[:oauth_verifier]
     )
-    Twitter.auth = {
+    Twitter::Client.auth = {
       :type => :oauth,
       :consumer_key => AppConfig.twitter.consumer_key,
       :consumer_secret => AppConfig.twitter.consumer_secret,
@@ -59,10 +59,10 @@ class SessionsController < ApplicationController
 
   private
   def store_credentials
-    Twitter.api = Grackle::Client::TWITTER_API_HOSTS_MAPPING[Twitter.auth[:type]]
-    session[:user] = Twitter.account.verify_credentials?
+    Twitter::Client.api = Grackle::Client::TWITTER_API_HOSTS_MAPPING[Twitter::Client.auth[:type]]
+    session[:user] = Twitter::Client.account.verify_credentials?
     session[:user].delete 'status'
-    session[:auth] = Twitter.auth
+    session[:auth] = Twitter::Client.auth
     redirect_back_or_default root_path
 
   rescue Grackle::TwitterError => error

@@ -18,6 +18,8 @@ module Grackle
   end
 end
 
-Twitter = Grackle::Client.new(
-  :handlers => {:json => Grackle::Handlers::JSON2MashHandler.new }
-)
+module Twitter
+  Client = Grackle::Client.new(
+    :handlers => {:json => Grackle::Handlers::JSON2MashHandler.new }
+  )
+end
