@@ -24,7 +24,7 @@ class StatusesController < ApplicationController
     @statuses = Twitter::Client.statuses.user_timeline? @options
 
   rescue Grackle::TwitterError => error
-    flash[:error] = extract_error_message(error)
+    flash.now[:error] = extract_error_message(error)
     @statuses = []
 
   ensure
