@@ -26,7 +26,10 @@ module ApplicationHelper
   end
 
   def profile_user
-    @user ? @user : (current_user ? current_user : nil)
+    return @profile_user if @profile_user
+    @profile_user = @user ? @user.dup : (current_user ? current_user.dup : nil)
+    fix_colors(@profile_user) if @profile_user
+    @profile_user
   end
 
   def profile_background(profile_user)
@@ -37,5 +40,21 @@ module ApplicationHelper
       result << (profile_user.profile_background_tile ? 'repeat' : 'no-repeat')
     end
     result.join(' ')
+  end
+
+  private
+  def fix_colors(profile_user)
+    unless profile_user.profile_text_color.blank?
+      profile_user.profile_text_color = "##{profile_user.profile_text_color}"
+    end
+    unless profile_user.profile_sidebar_fill_color.blank?
+      profile_user.profile_sidebar_fill_color = "##{profile_user.profile_sidebar_fill_color}"
+    end
+    unless profile_user.profile_link_color.blank?
+      profile_user.profile_link_color = "##{profile_user.profile_link_color}"
+    end
+    unless profile_user.profile_sidebar_border_color.blank?
+      profile_user.profile_sidebar_border_color = "##{profile_user.profile_sidebar_border_color}"
+    end
   end
 end
