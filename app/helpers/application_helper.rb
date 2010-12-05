@@ -12,7 +12,8 @@ module ApplicationHelper
       tweet,
       :username_url_base => root_path,
       :list_url_base => root_path,
-      :hashtag_url_base => URI.encode('http://search.twitter.com/search?q=#')
+      :hashtag_url_base => URI.encode('http://search.twitter.com/search?q=#'),
+      :target => '_blank'
     )
   end
 
