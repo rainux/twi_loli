@@ -21,6 +21,7 @@ class StatusesController < ApplicationController
     @user = Twitter::Client.users.show? :screen_name => params[:user_id]
 
     @options[:screen_name] = params[:user_id]
+    @options[:include_rts] = true
     @statuses = Twitter::Client.statuses.user_timeline? @options
 
   rescue Grackle::TwitterError => error
@@ -32,6 +33,7 @@ class StatusesController < ApplicationController
   end
 
   def mentions
+    @options[:include_rts] = true
     @statuses = Twitter::Client.statuses.mentions? @options
 
     respond_timeline @statuses

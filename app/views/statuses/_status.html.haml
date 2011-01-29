@@ -16,6 +16,7 @@
 - li_class << 'top' if params[:since_id]
 - li_class << 'bottom' if params[:max_id]
 - li_class << 'newly_created' if newly_created
+- li_class << 'none-retweet' if !original_status
 
 %li.status{ |
   :id => "status_#{status.id}", 'data-id' => status.id, |
